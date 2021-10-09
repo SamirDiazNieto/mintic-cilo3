@@ -53,7 +53,7 @@ const ModalEditarProducto = ({usuario, arregloUsuarios, listarUsuarios, handleCh
 
           <FormGroup>
             <label>
-              Descripción:
+              Nombre:
             </label>
             <input
               className="form-control"
@@ -67,29 +67,40 @@ const ModalEditarProducto = ({usuario, arregloUsuarios, listarUsuarios, handleCh
 
           <FormGroup>
             <label>
-              Valor:
+              password:
             </label>
             <input
               className="form-control"
               name="valor"
-              type="number"
+              type="text"
               onChange={handleChange}
               value={usuario.form.valor}
             />
           </FormGroup>
 
           <FormGroup>
-            <label>
-              Estado:
-            </label>
-            <input
-              className="form-control"
-              name="estado"
-              type="text"
-              onChange={handleChange}
-              value={usuario.form.estado}
-            />
-          </FormGroup>
+          <label>
+            Rol:
+          </label>
+          <select name="rol" className="form-control" onChange={handleChange}>
+            <option value="-1">Seleccione una opción</option>
+            <option value="administrador">Administrador</option>
+            <option value="Vendedor">Vendedor</option>            
+          </select>
+        </FormGroup>
+
+        <FormGroup>
+          <label>
+            Estado:
+          </label>
+          <select name="estado" className="form-control" onChange={handleChange}>
+            <option value="-1">Seleccione una opción</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="noAutorizado">No Autorizado</option>
+            <option value="autorizado">Autorizado</option>
+
+          </select>
+        </FormGroup>
                  
         </ModalBody>
 
