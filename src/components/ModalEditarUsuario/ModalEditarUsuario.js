@@ -35,7 +35,7 @@ const ModalEditarUsuario = ({usuario, arregloUsuarios, listarUsuarios, handleCha
   return (
   <Modal isOpen={isOpen}>
         <ModalHeader>
-          <div><h3>Actualizar Producto {usuario.form.id}</h3></div>
+          <div><h3>Actualizar usuario {usuario.form.id}</h3></div>
         </ModalHeader>
 
         <ModalBody>
