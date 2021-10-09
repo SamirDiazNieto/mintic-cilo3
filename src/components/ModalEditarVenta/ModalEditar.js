@@ -16,7 +16,7 @@ import {
   Alert,
   Container
 } from "reactstrap";
-import "jsxstyle"
+
 
 const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVentas, setModalActualizar, isOpen }) => {
 
