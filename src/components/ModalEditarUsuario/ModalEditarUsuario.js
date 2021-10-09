@@ -11,7 +11,7 @@ import {
 
 
 
-const ModalEditarProducto = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalActualizar,isOpen}) => {
+const ModalEditarUsuario = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalActualizar,isOpen}) => {
 
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
