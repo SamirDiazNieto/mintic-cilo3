@@ -10,19 +10,36 @@ import {
 } from "reactstrap";
 
 
-const ModalCrear = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalInsertar,isOpen}) => {
+const ModalCrear = ({usuario, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
   
 
 const cerrarModalInsertar = () => {
   setModalInsertar(false);
 };
+
 const insertar = () => {
   let usuarioACrear = { ...usuario.form };
-  usuarioACrear.id = usuario.data.length + 1;
-  arregloUsuarios.push(usuarioACrear);
-listarUsuarios(arregloUsuarios);
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(usuarioACrear)
+  };
+  console.log(usuarioACrear);
+  console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
+  fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+    .then(
+      (response) => {
+        response.json();
+        setNewVal(newVal + 1);
+      },
+      (error) => {
+        // setIsLoaded(true);
+        // setErrors(error);
+      })
   setModalInsertar(false);
-}
+};
 
 return (
   <Modal isOpen={isOpen}>
@@ -31,7 +48,7 @@ return (
   </ModalHeader>
 
   <ModalBody>
-    <FormGroup>
+    {/* <FormGroup>
       <label>
         Id:
       </label>
@@ -42,7 +59,7 @@ return (
         type="text"
         value={usuario.data.length + 1}
       />
-    </FormGroup>
+    </FormGroup> */}
     <FormGroup>
       <label>
         Email:
@@ -98,7 +115,7 @@ return (
       <input
         className="form-control"
         name="phoneNumber"
-        type="text"
+        type="number"
         onChange={handleChange}
       />
     </FormGroup>
