@@ -9,6 +9,8 @@ import ListadoUsuarios from './components/ListadoUsuarios/ListadoUsuarios';
 //import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 
 export function capturaCampos() {
 	const div_register = document.getElementById('div-trasera-register');
@@ -29,13 +31,15 @@ ReactDOM.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<Switch>
-				<Route exact path='/' component={} />
-				{/* <Route exact path='/' component={App} />
+				<Route exact path='/' component={Home} />
+				<Route exact path='/entrar' component={App} />
+				<Route exact path='/entrar-a-dashboard' component={Dashboard} />
+				<Route exact component={Home} />
+				{/*
 				<Route exact path='/ingreso' component={VistaTabla} />
 				<Route exact path='/ventas' component={VistaVenta} />
 				<Route exact path='/listado-productos' component={ListadoProductos} />
-				<Route exact path='/usuarios' component={ListadoUsuarios} />
-				<Route exact component={App} /> */}
+<Route exact path='/usuarios' component={ListadoUsuarios} />*/}
 			</Switch>
 		</BrowserRouter>
 	</React.StrictMode>,
