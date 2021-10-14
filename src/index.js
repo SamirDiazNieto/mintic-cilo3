@@ -31,18 +31,12 @@ ReactDOM.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<Switch>
-				<Route exact path='/' component={Home} />
-				<Route exact path='/entrar' component={App} />
+				<Route exact path='/' component={App} />
 				<Route exact path='/entrar-a-dashboard' component={Dashboard} />
 				<Route exact path='/dashboard/lista-productos' component={ListadoProductos} />
 				<Route exact path='/dashboard/lista-ventas' component={VistaVenta} />
 				<Route exact path='/dashboard/lista-usuarios' component={ListadoUsuarios} />
-				<Route exact component={Home} />
-				{/*
-				<Route exact path='/ingreso' component={VistaTabla} />
-				<Route exact path='/ventas' component={VistaVenta} />
-				<Route exact path='/listado-productos' component={ListadoProductos} />
-<Route exact path='/usuarios' component={ListadoUsuarios} />*/}
+				<Route exact component={App} />
 			</Switch>
 		</BrowserRouter>
 	</React.StrictMode>,
