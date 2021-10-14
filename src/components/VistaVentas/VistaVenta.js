@@ -164,6 +164,7 @@ const VistaVenta = () => {
               <th>Total</th>
               <th>Estado</th>
               <th>Fecha</th>
+              <th>Opciones</th>
             </tr>
           </thead>
 

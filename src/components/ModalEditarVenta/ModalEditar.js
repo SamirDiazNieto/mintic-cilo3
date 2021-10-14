@@ -23,11 +23,31 @@ const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen
   { Element: "carne", valorUnitario: 6000 },
   { Element: "cerdo", valorUnitario: 10000 },
   { Element: "cafe", valorUnitario: 20000 }]
-  const listItemsProducto = productos.map((Producto) =>
-
-    <option name="IdProducto" onChange={handleChange} value={Producto.Element}>{Producto.Element}</option>
+  const listItemsProducto = productos.map((Producto) =>    {
+      if(Producto.Element===venta.form.IdProducto){
+        return (<option name="IdProducto" selected value={Producto.Element}>{Producto.Element}</option>)
+      }
+      else{
+        return (<option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>)
+      }
+  
+      
+    }
   );
   console.log(venta)
+
+  const estados = ["en proceso", "cancelada", "entregada"]
+  const listarEstados = estados.map((Producto) =>{
+  if(Producto===venta.form.estado){
+    return (<option name="estado" selected value={Producto}>{Producto}</option>)
+  }
+  else{
+    return (<option name="estado" value={Producto}>{Producto}</option>)
+  }
+
+   
+});
+
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
@@ -102,7 +122,7 @@ const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen
           </label>
 
           
-          <Input type="select" >
+          <Input type="select" name="IdProducto" onChange={handleChange} >
             {listItemsProducto}
           </Input>
 
@@ -157,15 +177,12 @@ const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen
           <label>
             Estado:
           </label>
-          <input
-            className="form-control"
-            name="estado"
-            type="text"
-            onChange={handleChange}
-            value={venta.form.estado}
-
-          />
+          <Input type="select" name="estado" onChange={handleChange}>
+          {listarEstados}
+          </Input>
           </FormGroup>
+          
+
           <Label for="selector">--{venta.form.IdProducto}</Label>
         <Container>
           <br />

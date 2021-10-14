@@ -26,6 +26,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
   { Element: "carne", valorUnitario: 6000 },
   { Element: "cerdo", valorUnitario: 10000 }]
   const listItemsProducto = productos.map((Producto) =>
+  
 
     <option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>
   );
@@ -49,6 +50,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
   }
 
   const insertar = () => {
+    console.log("insertar Venta")
     console.log(venta)
     let ventaACrear = { ...venta.form };
     const requestOptions = {
@@ -100,6 +102,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
 
             <Label for="selector">Producto:</Label>
             <Input type="select" name="IdProducto" onChange={handleChange}>
+              <option>Selecione un Producto</option>
               {listItemsProducto}
             </Input>
 
@@ -143,7 +146,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
               name="valorTotal"
               type="number"
               onChange={handleChange}
-              value={venta.form.precioUnitario * venta.form.cantidad}
+              value={venta.form.valorTotal=venta.form.precioUnitario * venta.form.cantidad}
             />
           </FormGroup>
 
@@ -153,6 +156,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
             </label>
             <Label for="selector"></Label>
             <Input type="select" name="estado" onChange={handleChange}>
+              <option>Selecione un estado</option>
               {listarEstados}
             </Input>
           </FormGroup>
