@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import VistaTabla from './components/VistaTabla/VistaTabla';
-// import reportWebVitals from './reportWebVitals';
+import ListadoProductos from './components/ListadoProductos/ListadoProductos';
+import VistaVenta from './components/VistaVentas/VistaVenta';
+import ListadoUsuarios from './components/ListadoUsuarios/ListadoUsuarios';
+//import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter,
   Switch, 
   Route 
 } from "react-router-dom"
-import VistaVenta from './components/VistaVentas/VistaVenta';
 
 export function capturaCampos(){
   const div_register =  document.getElementById("div-trasera-register");
@@ -35,6 +37,8 @@ ReactDOM.render(
       < Route exact path="/" component={App}/> 
       < Route exact path="/ingreso" component={VistaTabla}/>
       < Route exact path="/ventas" component={VistaVenta}/>
+      < Route exact path="/listado-productos" component={ListadoProductos}/> 
+      < Route exact path="/usuarios" component={ListadoUsuarios}/>
       < Route exact component={App}/>
     </Switch>
     </BrowserRouter>

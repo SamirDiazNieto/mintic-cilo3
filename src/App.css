@@ -201,13 +201,13 @@ img{
 
 #formulario-login{
   opacity: 1;
-  display: flex;
+  display: block;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Formulario Regitro */
 #formulario-register{
-  display: flex;
+  display: none;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 /* Media Query  */

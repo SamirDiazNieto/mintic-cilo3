@@ -2,9 +2,7 @@ import React from 'react';
 import './ModalCrear.css';
 
 import {
-  Row,
 
-  Col,
   Input,
   Label,
   Button,
@@ -18,7 +16,7 @@ import {
 } from "reactstrap";
 
 
-const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChange, setModalInsertar, isOpen }) => {
+const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
   const estados = ["en proceso", "cancelada", "entregada"]
   const listarEstados = estados.map((Producto) =>
 
@@ -28,6 +26,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
   { Element: "carne", valorUnitario: 6000 },
   { Element: "cerdo", valorUnitario: 10000 }]
   const listItemsProducto = productos.map((Producto) =>
+  
 
     <option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>
   );
@@ -51,13 +50,31 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
   }
 
   const insertar = () => {
+    console.log("insertar Venta")
     console.log(venta)
     let ventaACrear = { ...venta.form };
-    ventaACrear.id = venta.data.length + 1;
-    arregloVentas.push(ventaACrear);
-    listarVentas(arregloVentas);
-    setModalInsertar(false);
-  }
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(ventaACrear)
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+    .then(
+      (response) => {
+        response.json();
+        setNewVal(newVal + 1);
+      },
+      (error) => {
+        console.log("error de subida")
+        console.log(error)
+        // setIsLoaded(true);
+        // setErrors(error);
+      })
+  setModalInsertar(false);
+};
+
 
   return (
     <Modal isOpen={isOpen} >
@@ -85,6 +102,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
 
             <Label for="selector">Producto:</Label>
             <Input type="select" name="IdProducto" onChange={handleChange}>
+              <option>Selecione un Producto</option>
               {listItemsProducto}
             </Input>
 
@@ -99,6 +117,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
               name="cantidad"
               type="number"
               onChange={handleChange}
+              
             />
           </FormGroup>
 
@@ -112,7 +131,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
               name="precioUnitario"
               type="number"
               onChange={handleChange}
-
+              
 
             />
           </FormGroup>
@@ -127,7 +146,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
               name="valorTotal"
               type="number"
               onChange={handleChange}
-              value={venta.form.precioUnitario * venta.form.cantidad}
+              value={venta.form.valorTotal=venta.form.precioUnitario * venta.form.cantidad}
             />
           </FormGroup>
 
@@ -137,6 +156,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
             </label>
             <Label for="selector"></Label>
             <Input type="select" name="estado" onChange={handleChange}>
+              <option>Selecione un estado</option>
               {listarEstados}
             </Input>
           </FormGroup>
@@ -174,6 +194,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
               name="cedulaCliente"
               type="number"
               onChange={handleChange}
+              
 
             />
           </FormGroup>
@@ -200,7 +221,7 @@ const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChang
             <input
               readOnly
               className="form-control"
-              name="nombreCliente"
+              name="nombreVendedor"
               type="text"
               onChange={handleChange}
               value={IdVendedor}
