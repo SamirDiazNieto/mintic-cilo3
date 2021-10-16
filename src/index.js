@@ -4,8 +4,14 @@ import './index.css';
 import App from './App';
 import VistaTabla from './components/VistaTabla/VistaTabla';
 import ListadoProductos from './components/ListadoProductos/ListadoProductos';
+<<<<<<< HEAD
 
 // import reportWebVitals from './reportWebVitals';
+=======
+import VistaVenta from './components/VistaVentas/VistaVenta';
+import ListadoUsuarios from './components/ListadoUsuarios/ListadoUsuarios';
+//import reportWebVitals from './reportWebVitals';
+>>>>>>> origin/Development
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter,
@@ -35,7 +41,13 @@ ReactDOM.render(
     <Switch>
       < Route exact path="/" component={App}/> 
       < Route exact path="/ingreso" component={VistaTabla}/>
+<<<<<<< HEAD
       < Route exact path="/listado-productos" component={ListadoProductos}/>
+=======
+      < Route exact path="/ventas" component={VistaVenta}/>
+      < Route exact path="/listado-productos" component={ListadoProductos}/> 
+      < Route exact path="/usuarios" component={ListadoUsuarios}/>
+>>>>>>> origin/Development
       < Route exact component={App}/>
     </Switch>
     </BrowserRouter>
