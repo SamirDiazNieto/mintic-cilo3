@@ -2,9 +2,6 @@ import React from 'react';
 import './ModalEditar.css';
 
 import {
-  Row,
-
-  Col,
   Input,
   Label,
   Button,
@@ -18,39 +15,51 @@ import {
 } from "reactstrap";
 
 
-const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVentas, setModalActualizar, isOpen }) => {
 
+const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
+  
+  console.log(venta)
 
   const productos = [{ Element: "Pollo", valorUnitario: 2000 },
   { Element: "carne", valorUnitario: 6000 },
   { Element: "cerdo", valorUnitario: 10000 },
   { Element: "cafe", valorUnitario: 20000 }]
-  const listItemsProducto = productos.map((Producto) =>
-
-    <option name="IdProducto" onChange={handleChange} value={Producto.Element}>{Producto.Element}</option>
+  const listItemsProducto = productos.map((Producto) =>    {
+      if(Producto.Element===venta.form.IdProducto){
+        return (<option name="IdProducto" selected value={Producto.Element}>{Producto.Element}</option>)
+      }
+      else{
+        return (<option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>)
+      }
+  
+      
+    }
   );
   console.log(venta)
+
+  const estados = ["en proceso", "cancelada", "entregada"]
+  const listarEstados = estados.map((Producto) =>{
+  if(Producto===venta.form.estado){
+    return (<option name="estado" selected value={Producto}>{Producto}</option>)
+  }
+  else{
+    return (<option name="estado" value={Producto}>{Producto}</option>)
+  }
+
+   
+});
+
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
   const editar = () => {
-    let contador = 0;
     let ventaAModificar = { ...venta.form };
-    console.log(venta)
-    //let arregloVentas = venta.data;
-    arregloVentas.map((registro) => {
-      if (ventaAModificar.id === registro.id) {
-        arregloVentas[contador] = ventaAModificar;
-      }
-      contador++;
-      return console.log("Edito Correctamente");
-    });
-    listarVentas(arregloVentas);
+    actualizarCustomer(ventaAModificar);
     setModalActualizar(false);
 
   };
   let resultado
-  const costoUnitario = () => {
+  /* const costoUnitario = () => {
     console.log(venta.form.IdProducto)
     //let arregloVentas = venta.data;
     
@@ -68,7 +77,26 @@ const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVen
     },
     console.log(resultado));
 
-  };
+  }; */
+  const actualizarCustomer = (customer) => {
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(customer)
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
+      .then(result => result.json())
+      .then(
+        (result) => {
+          setNewVal(newVal + 1);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
 
   return (
     <Modal isOpen={isOpen}>
@@ -84,8 +112,8 @@ const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVen
           <input
             className="form-control"
             readOnly
-            type="number"
-            value={venta.form.id}
+            type="text"
+            value={venta.form._id}
 
           />
         </FormGroup>
@@ -95,7 +123,7 @@ const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVen
           </label>
 
           
-          <Input type="select" >
+          <Input type="select" name="IdProducto" onChange={handleChange} >
             {listItemsProducto}
           </Input>
 
@@ -142,7 +170,7 @@ const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVen
             name="valorTotal"
             type="number"
             onChange={handleChange}
-            value={venta.form.cantidad*venta.form.precioUnitario}
+            value={parseInt(venta.form.cantidad)*parseInt(venta.form.precioUnitario)}
 
           />
         </FormGroup>
@@ -150,15 +178,12 @@ const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVen
           <label>
             Estado:
           </label>
-          <input
-            className="form-control"
-            name="estado"
-            type="text"
-            onChange={handleChange}
-            value={venta.form.estado}
-
-          />
+          <Input type="select" name="estado" onChange={handleChange}>
+          {listarEstados}
+          </Input>
           </FormGroup>
+          
+
           <Label for="selector">--{venta.form.IdProducto}</Label>
         <Container>
           <br />
@@ -227,6 +252,7 @@ const ModalEditar = ({ IdVendedor, venta, handleChange, arregloVentas, listarVen
             />
           </FormGroup>
         </Container>
+        
 
 
         

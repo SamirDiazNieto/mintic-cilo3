@@ -11,12 +11,17 @@ import {
 
 
 
+<<<<<<< HEAD
 const ModalEditar = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalActualizar,isOpen}) => {
+=======
+const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
+>>>>>>> JeisonEslava
 
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
   const editar = () => {
+<<<<<<< HEAD
     let contador = 0;
     let usuarioAModificar = { ...usuario.form };
     //let arregloUsuarios = usuario.data;
@@ -40,6 +45,39 @@ const ModalEditar = ({usuario, arregloUsuarios, listarUsuarios, handleChange,set
 
         <ModalBody>
           <FormGroup>
+=======
+    let usuarioAModificar = { ...usuario.form };
+    actualizarCustomer(usuarioAModificar);
+    setModalActualizar(false);
+  };
+  const actualizarCustomer = (customer) => {
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(customer)
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
+      .then(result => result.json())
+      .then(
+        (result) => {
+          setNewVal(newVal + 1);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+  return (
+  <Modal isOpen={isOpen}>
+        <ModalHeader>
+          <div><h3>Actualizar Usuario {usuario.form.name}</h3></div>
+        </ModalHeader>
+
+        <ModalBody>
+          {/* <FormGroup>
+>>>>>>> JeisonEslava
             <label>
               Id:
             </label>
@@ -47,9 +85,15 @@ const ModalEditar = ({usuario, arregloUsuarios, listarUsuarios, handleChange,set
               className="form-control"
               readOnly
               type="text"
+<<<<<<< HEAD
               value={usuario.form.id}
             />
           </FormGroup>
+=======
+              value={usuario.form._id}
+            />
+          </FormGroup> */}
+>>>>>>> JeisonEslava
 
           <FormGroup>
             <label>
