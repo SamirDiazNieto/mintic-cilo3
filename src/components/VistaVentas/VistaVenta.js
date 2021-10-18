@@ -109,6 +109,7 @@ const listarVentas= (datos) =>{
               <th>Total</th>
               <th>Estado</th>
               <th>Fecha</th>
+              <th>Acciones</th>
             </tr>
           </thead>
 
