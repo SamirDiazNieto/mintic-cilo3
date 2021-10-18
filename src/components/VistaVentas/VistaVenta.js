@@ -215,7 +215,12 @@ const VistaVenta = () => {
 
           />
         </div>
+
+
+        
       </Container>
+
+      
 
     </>
   );

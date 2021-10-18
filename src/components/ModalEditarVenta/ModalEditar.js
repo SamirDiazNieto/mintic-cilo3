@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 
 
+
 const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
   
   console.log(venta)
@@ -251,6 +252,7 @@ const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen
             />
           </FormGroup>
         </Container>
+        
 
 
         
