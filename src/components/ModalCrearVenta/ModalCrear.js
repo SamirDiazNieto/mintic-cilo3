@@ -2,13 +2,6 @@ import React from 'react';
 import './ModalCrear.css';
 
 import {
-<<<<<<< HEAD
-  Row,
-
-  Col,
-=======
-
->>>>>>> JeisonEslava
   Input,
   Label,
   Button,
@@ -22,11 +15,7 @@ import {
 } from "reactstrap";
 
 
-<<<<<<< HEAD
-const ModalCrear = ({IdVendedor, venta, arregloVentas, listarVentas, handleChange, setModalInsertar, isOpen }) => {
-=======
 const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
->>>>>>> JeisonEslava
   const estados = ["en proceso", "cancelada", "entregada"]
   const listarEstados = estados.map((Producto) =>
 
@@ -36,10 +25,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
   { Element: "carne", valorUnitario: 6000 },
   { Element: "cerdo", valorUnitario: 10000 }]
   const listItemsProducto = productos.map((Producto) =>
-<<<<<<< HEAD
-=======
   
->>>>>>> JeisonEslava
 
     <option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>
   );
@@ -63,15 +49,6 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
   }
 
   const insertar = () => {
-<<<<<<< HEAD
-    console.log(venta)
-    let ventaACrear = { ...venta.form };
-    ventaACrear.id = venta.data.length + 1;
-    arregloVentas.push(ventaACrear);
-    listarVentas(arregloVentas);
-    setModalInsertar(false);
-  }
-=======
     console.log("insertar Venta")
     console.log(venta)
     let ventaACrear = { ...venta.form };
@@ -97,7 +74,6 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
   setModalInsertar(false);
 };
 
->>>>>>> JeisonEslava
 
   return (
     <Modal isOpen={isOpen} >
@@ -125,10 +101,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
 
             <Label for="selector">Producto:</Label>
             <Input type="select" name="IdProducto" onChange={handleChange}>
-<<<<<<< HEAD
-=======
               <option>Selecione un Producto</option>
->>>>>>> JeisonEslava
               {listItemsProducto}
             </Input>
 
@@ -143,10 +116,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
               name="cantidad"
               type="number"
               onChange={handleChange}
-<<<<<<< HEAD
-=======
               
->>>>>>> JeisonEslava
             />
           </FormGroup>
 
@@ -160,11 +130,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
               name="precioUnitario"
               type="number"
               onChange={handleChange}
-<<<<<<< HEAD
-
-=======
               
->>>>>>> JeisonEslava
 
             />
           </FormGroup>
@@ -179,11 +145,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
               name="valorTotal"
               type="number"
               onChange={handleChange}
-<<<<<<< HEAD
-              value={venta.form.precioUnitario * venta.form.cantidad}
-=======
               value={venta.form.valorTotal=venta.form.precioUnitario * venta.form.cantidad}
->>>>>>> JeisonEslava
             />
           </FormGroup>
 
@@ -193,10 +155,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
             </label>
             <Label for="selector"></Label>
             <Input type="select" name="estado" onChange={handleChange}>
-<<<<<<< HEAD
-=======
               <option>Selecione un estado</option>
->>>>>>> JeisonEslava
               {listarEstados}
             </Input>
           </FormGroup>
@@ -234,10 +193,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
               name="cedulaCliente"
               type="number"
               onChange={handleChange}
-<<<<<<< HEAD
-=======
               
->>>>>>> JeisonEslava
 
             />
           </FormGroup>
@@ -264,11 +220,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
             <input
               readOnly
               className="form-control"
-<<<<<<< HEAD
-              name="nombreCliente"
-=======
               name="nombreVendedor"
->>>>>>> JeisonEslava
               type="text"
               onChange={handleChange}
               value={IdVendedor}
