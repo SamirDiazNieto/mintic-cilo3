@@ -75,7 +75,6 @@ const VistaTabla = () => {
   }, [newVal]);
   
   const mostrarModalActualizar = (datoId) => {
-    
     let userToModify;
     arregloUsuarios.map((registro) => {
       if ( datoId.target.id === registro._id) {
@@ -126,8 +125,6 @@ const VistaTabla = () => {
       );
   }
   
-
-
   return (
     < >
       <Container>
