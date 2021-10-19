@@ -10,27 +10,13 @@ import {
 } from "reactstrap";
 
 
-<<<<<<< HEAD
-const ModalCrear = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalInsertar,isOpen}) => {
-  
-=======
+
 const ModalCrear = ({usuario, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
 
-  console.log(PATH_CUSTOMERS)
->>>>>>> JeisonEslava
 
 const cerrarModalInsertar = () => {
   setModalInsertar(false);
 };
-<<<<<<< HEAD
-const insertar = () => {
-  let usuarioACrear = { ...usuario.form };
-  usuarioACrear.id = usuario.data.length + 1;
-  arregloUsuarios.push(usuarioACrear);
-listarUsuarios(arregloUsuarios);
-  setModalInsertar(false);
-}
-=======
 
 const insertar = () => {
   let usuarioACrear = { ...usuario.form };
@@ -54,8 +40,10 @@ const insertar = () => {
         // setErrors(error);
       })
   setModalInsertar(false);
+
 };
->>>>>>> JeisonEslava
+
+
 
 return (
   <Modal isOpen={isOpen}>
@@ -64,11 +52,9 @@ return (
   </ModalHeader>
 
   <ModalBody>
-<<<<<<< HEAD
-    <FormGroup>
-=======
+
     {/* <FormGroup>
->>>>>>> JeisonEslava
+
       <label>
         Id:
       </label>
@@ -79,11 +65,9 @@ return (
         type="text"
         value={usuario.data.length + 1}
       />
-<<<<<<< HEAD
-    </FormGroup>
-=======
+
     </FormGroup> */}
->>>>>>> JeisonEslava
+
     <FormGroup>
       <label>
         Email:
@@ -139,11 +123,9 @@ return (
       <input
         className="form-control"
         name="phoneNumber"
-<<<<<<< HEAD
-        type="text"
-=======
+
         type="number"
->>>>>>> JeisonEslava
+
         onChange={handleChange}
       />
     </FormGroup>

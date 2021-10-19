@@ -1,1 +1,0 @@
-Vista Usuario: Lista los usuarios registrados en la aplicación, Mediante el empleo de Botones, desde la vista se pueden ejecutar todas las instrucciones del CRUD.

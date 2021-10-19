@@ -11,41 +11,15 @@ import {
 
 
 
-<<<<<<< HEAD
-const ModalEditar = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalActualizar,isOpen}) => {
-=======
+
 const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
->>>>>>> JeisonEslava
+
 
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
   const editar = () => {
-<<<<<<< HEAD
-    let contador = 0;
-    let usuarioAModificar = { ...usuario.form };
-    //let arregloUsuarios = usuario.data;
-    arregloUsuarios.map((registro) => {
-      if (usuarioAModificar.id === registro.id) {
-        arregloUsuarios[contador]= usuarioAModificar;
-      }
-      contador++;
-      return console.log("Edito Correctamente");
-    });
-    listarUsuarios(arregloUsuarios);
-    setModalActualizar(false);
-    
-  };
 
-  return (
-  <Modal isOpen={isOpen}>
-        <ModalHeader>
-          <div><h3>Actualizar Usuario {usuario.form.id}</h3></div>
-        </ModalHeader>
-
-        <ModalBody>
-          <FormGroup>
-=======
     let usuarioAModificar = { ...usuario.form };
     actualizarCustomer(usuarioAModificar);
     setModalActualizar(false);
@@ -76,8 +50,9 @@ const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal
         </ModalHeader>
 
         <ModalBody>
+
           {/* <FormGroup>
->>>>>>> JeisonEslava
+
             <label>
               Id:
             </label>
@@ -85,15 +60,11 @@ const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal
               className="form-control"
               readOnly
               type="text"
-<<<<<<< HEAD
-              value={usuario.form.id}
-            />
-          </FormGroup>
-=======
+
               value={usuario.form._id}
             />
           </FormGroup> */}
->>>>>>> JeisonEslava
+
 
           <FormGroup>
             <label>
