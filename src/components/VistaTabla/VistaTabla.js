@@ -1,16 +1,12 @@
 import React from 'react';
 import './VistaTabla.css';
-import {
-  Table,
-  Button,
-  Container,
-
-} from "reactstrap";
+import { Table, Button, Container } from 'reactstrap';
 import ModalCrear from '../ModalCrear/ModalCrear';
 import ModalEditar from '../ModalEditar/ModalEditar';
 
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
+
   // { id: 1, email: "homero.simpson@gmail.com", phoneNumber: "12345667", address: "Av Simpre Viva 123", firstName: "Homero", lastName: "Simpson" },
   // { id: 2, email: "bart.simpson@gmail.com", phoneNumber: "12345667", address: "Av Simpre Viva 123", firstName: "Bart", lastName: "Simpson" },
   // { id: 3, email: "marge.simpson@gmail.com", phoneNumber: "12345667", address: "Av Simpre Viva 123", firstName: "Marge", lastName: "Simpson" },
@@ -36,6 +32,8 @@ const VistaTabla = () => {
       email: "",
       phoneNumber: "",
       address: ""
+
+
     }
   });
   let arregloUsuarios = usuario.data;
@@ -49,6 +47,7 @@ const VistaTabla = () => {
       }
     }));
   };
+
   
   React.useEffect(() => {
     const requestOptions = {
@@ -78,10 +77,12 @@ const VistaTabla = () => {
     let userToModify;
     arregloUsuarios.map((registro) => {
       if ( datoId.target.id === registro._id) {
+
         userToModify = registro;
         }
         return console.log("Mostro Modal Actualizar");
     });
+
      setUsuario({
        ...usuario,
      form: userToModify
@@ -94,7 +95,9 @@ const VistaTabla = () => {
     return console.log("Mostro Modal Actualizar");
   };
 
+
   const eliminar = (e) => {
+
     arregloUsuarios.map((registro) => {
       if (e.target.id === registro._id) {
         let opcion = window.confirm("¿Está seguro que desea eliminar el valor " + registro.firstName + "?");
@@ -105,6 +108,7 @@ const VistaTabla = () => {
       return console.log("Elimino Correctamente");
     });
   };
+
 
   const borrarCustomer  = (id) => {
     const requestOptions = {
@@ -148,7 +152,9 @@ const VistaTabla = () => {
 
           <tbody>
             {usuario.data.map((dato) => (
+
               <tr key={dato._id}>
+
                 <td>{dato.email}</td>
                 <td>{dato.firstName}</td>
                 <td>{dato.lastName}</td>
@@ -156,12 +162,17 @@ const VistaTabla = () => {
                 <td>{dato.phoneNumber}</td>
                 <td>
                   <Button
+
                     color="primary" id={dato._id}
+
                     onClick={mostrarModalActualizar}
                   >
                     Editar
                   </Button>{" "}
+
                   <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
+
+
                 </td>
               </tr>
             ))}
@@ -189,10 +200,8 @@ const VistaTabla = () => {
           />
         </div>
       </Container>
-
-    </>
-  );
-            }
-
+		</>
+	);
+};
 
 export default VistaTabla;

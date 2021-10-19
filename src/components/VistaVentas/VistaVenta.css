@@ -1,3 +1,4 @@
+
 /* #lista {
 display: grid;
 background-color: rgba(0, 128, 255, 0.59);
@@ -26,3 +27,4 @@ table > :not(caption) > * > * {
   padding-right: 0.5rem !important;
 
 }
+

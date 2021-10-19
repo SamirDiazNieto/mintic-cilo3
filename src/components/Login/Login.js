@@ -1,5 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
+import { NavLink as Link } from 'react-router-dom';
 import './Login.css';
+
 import Logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react';
 const googleClientId =  '618490195232-hq0bfvk88f9d0g3auskp4399ujdhtq8l.apps.googleusercontent.com';// process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -140,3 +143,4 @@ const Login = () => {
 }
  
 export default Login;
+

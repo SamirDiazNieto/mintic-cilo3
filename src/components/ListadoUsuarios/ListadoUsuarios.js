@@ -1,19 +1,17 @@
 import React from 'react';
 import './ListadoUsuarios.css';
-import {
-  Table,
-  Button,
-  Container,
-
-} from "reactstrap";
+import { Table, Button, Container } from 'reactstrap';
 import ModalCrearUsuario from '../ModalCrearUsuario/ModalCrearUsuario';
 import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
+import Sidebar from '../Dashboard/Sidebar/Sidebar';
 
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
+
   // { id: 1, nombre: "Producto 1", password: "1000", rol: "vendedor", estado:"Pendiente"},
   // { id: 2, nombre: "Producto 1", password: "1000", rol: "Administrador", estado:"Aceptado"},
   // { id: 3, nombre: "Producto 1", password: "1000", rol: "vendedor", estado:"No aceptado"},
+
 ];
 
 
@@ -21,6 +19,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
 
 const ListadoUsuarios = () => {
+
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
   const [newVal, setNewVal] = React.useState(0);
@@ -183,9 +182,46 @@ const ListadoUsuarios = () => {
         </div>
       </Container>
 
-    </>
-  );
-            }
 
+						<tbody>
+							{usuario.data.map((dato) => (
+								<tr key={dato.id}>
+									<td>{dato.nombre}</td>
+
+									<td>{dato.rol}</td>
+									<td>{dato.estado}</td>
+									<td>
+										<Button color='primary' id={dato.id} onClick={mostrarModalActualizar}>
+											Editar
+										</Button>{' '}
+										<Button id={dato.id} color='danger' onClick={eliminar}>
+											Eliminar
+										</Button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
+					<ModalCrearUsuario
+						usuario={usuario}
+						arregloUsuarios={arregloUsuarios}
+						listarUsuarios={listarUsuarios}
+						handleChange={handleChange}
+						setModalInsertar={setModalInsertar}
+						isOpen={modalInsertar}
+					/>
+					<ModalEditarUsuario
+						usuario={usuario}
+						arregloUsuarios={arregloUsuarios}
+						listarUsuarios={listarUsuarios}
+						handleChange={handleChange}
+						setModalActualizar={setModalActualizar}
+						isOpen={modalActualizar}
+					/>
+				</div>
+			</Container>
+		</>
+	);
+};
 
 export default ListadoUsuarios;

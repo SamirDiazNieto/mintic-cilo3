@@ -10,8 +10,9 @@ import {
 } from "reactstrap";
 
 
+
 const ModalCrear = ({usuario, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
-  
+
 
 const cerrarModalInsertar = () => {
   setModalInsertar(false);
@@ -39,7 +40,10 @@ const insertar = () => {
         // setErrors(error);
       })
   setModalInsertar(false);
+
 };
+
+
 
 return (
   <Modal isOpen={isOpen}>
@@ -48,7 +52,9 @@ return (
   </ModalHeader>
 
   <ModalBody>
+
     {/* <FormGroup>
+
       <label>
         Id:
       </label>
@@ -59,7 +65,9 @@ return (
         type="text"
         value={usuario.data.length + 1}
       />
+
     </FormGroup> */}
+
     <FormGroup>
       <label>
         Email:
@@ -115,7 +123,9 @@ return (
       <input
         className="form-control"
         name="phoneNumber"
+
         type="number"
+
         onChange={handleChange}
       />
     </FormGroup>
