@@ -12,10 +12,6 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
-<<<<<<< HEAD
-=======
-    "react-table": "^7.7.0",
->>>>>>> JeisonEslava
     "reactstrap": "^8.10.0",
     "styled-components": "^5.3.1",
     "web-vitals": "^1.1.2"
