@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 
 
-const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleChange, setModalInsertar, isOpen }) => {
+const ModalCrearUsuario = ({ usuario, handleChange, setModalInsertar, isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS }) => {
 
 
   const cerrarModalInsertar = () => {
@@ -18,9 +18,25 @@ const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleCha
   };
   const insertar = () => {
     let usuarioACrear = { ...usuario.form };
-    usuarioACrear.id = usuario.data.length + 1;
-    arregloUsuarios.push(usuarioACrear);
-    listarUsuarios(arregloUsuarios);
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(usuarioACrear)
+    };
+    console.log(usuarioACrear);
+    console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+      .then(
+        (response) => {
+          response.json();
+          setNewVal(newVal + 1);
+        },
+        (error) => {
+          // setIsLoaded(true);
+          // setErrors(error);
+        })
     setModalInsertar(false);
   }
 
@@ -31,7 +47,7 @@ const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleCha
       </ModalHeader>
 
       <ModalBody>
-        <FormGroup>
+        {/* <FormGroup>
           <label>
             Id:
           </label>
@@ -42,14 +58,14 @@ const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleCha
             type="text"
             value={usuario.data.length + 1}
           />
-        </FormGroup>
+        </FormGroup> */}
         <FormGroup>
           <label>
             Nombre:
           </label>
           <input
             className="form-control"
-            name="nombre"
+            name="nombreUsuario"
             type="text"
             onChange={handleChange}
             required
@@ -63,7 +79,8 @@ const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleCha
           <input
             className="form-control"
             name="password"
-            type="password"
+            // type="password"
+            type="text"
             min="1"
             step="any"
             onChange={handleChange}
@@ -74,10 +91,10 @@ const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleCha
           <label>
             Rol:
           </label>
-          <select name="rol" className="form-control" onChange={handleChange}>
-            <option value="-1">Seleccione una opción</option>
-            <option value="administrador">Administrador</option>
-            <option value="Vendedor">Vendedor</option>            
+          <select name="rol" className="form-control"  type="text" onChange={handleChange}>
+            <option value="-1" type="text">Seleccione una opción</option>
+            <option value="administrador" type="text">Administrador</option>
+            <option value="Vendedor" type="text">Vendedor</option>            
           </select>
           {/* <input
             className="form-control"
@@ -91,11 +108,11 @@ const ModalCrearUsuario = ({ usuario, arregloUsuarios, listarUsuarios, handleCha
           <label>
             Estado:
           </label>
-          <select name="estado" className="form-control" onChange={handleChange}>
-            <option value="-1">Seleccione una opción</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="noAutorizado">No Autorizado</option>
-            <option value="autorizado">Autorizado</option>
+          <select name="estado" className="form-control" type="text" onChange={handleChange}>
+            <option value="-1" type="text">Seleccione una opción</option>
+            <option value="pendiente" type="text"> Pendiente</option>
+            <option value="noAutorizado" type="text">No Autorizado</option>
+            <option value="autorizado" type="text">Autorizado</option>
 
           </select>
           {/* <input

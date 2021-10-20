@@ -1,4 +1,5 @@
-#lista {
+
+/* #lista {
 display: grid;
 background-color: rgba(0, 128, 255, 0.59);
 padding: 33px 59px;
@@ -6,11 +7,7 @@ align-content: center;
 justify-content: center;
 }
 
-table > :not(caption) > * > * {
-    padding: 0.5rem 0.5rem;
-    padding-right: 2rem !important;
 
-  }
 
 .titulos{
   margin-top: 5rem;
@@ -24,4 +21,10 @@ td{
 th{
   color: #fff;
   font-size: 19px;
+} */
+table > :not(caption) > * > * {
+  padding: 0.5rem 0.5rem;
+  padding-right: 0.5rem !important;
+
 }
+
