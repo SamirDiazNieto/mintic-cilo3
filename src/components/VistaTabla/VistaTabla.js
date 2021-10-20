@@ -3,7 +3,7 @@ import './VistaTabla.css';
 import { Table, Button, Container } from 'reactstrap';
 import ModalCrear from '../ModalCrear/ModalCrear';
 import ModalEditar from '../ModalEditar/ModalEditar';
-
+import Sidebar from '../Dashboard/Sidebar/Sidebar';
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
 
@@ -131,6 +131,8 @@ const VistaTabla = () => {
   
   return (
     < >
+    
+      <Sidebar/>
       <Container>
         <h1 className="titulos">Interfaz de ingreso {variable}</h1>
         <br />
