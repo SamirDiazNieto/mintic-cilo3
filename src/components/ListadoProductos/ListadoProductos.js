@@ -46,6 +46,7 @@ const ListadoProductos = () => {
   };
 
   React.useEffect(() => {
+
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -53,7 +54,7 @@ const ListadoProductos = () => {
       },
     };
     fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-      .then(res => res.json())
+    .then(res => res.json())
       .then(
         (result) => {
           console.log("data del result")
@@ -90,8 +91,8 @@ const ListadoProductos = () => {
     setModalInsertar(true);
   };
 
-  const eliminar = (datoID) => {
-    let id = datoID.target.id;
+  const eliminar = (id) => {
+    //let id = datoID.target.id;
     const requestOptions = {
       method: 'DELETE'
       , headers: { 'Content-Type': 'application/json' }
@@ -99,12 +100,15 @@ const ListadoProductos = () => {
     fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
       .then(result => result.json())
       .then((result) => {
+        
         //setNewVal(newVal + 1);
       }, (error) => {
         console.log(error);
       });
     listarUsuarios();
   };
+  
+
 
   const listarUsuarios = () => {
     // const requestOptions = {
@@ -191,18 +195,23 @@ const ListadoProductos = () => {
           </Table>
           <ModalCrearProducto
             usuario={usuario}
-            arregloUsuarios={arregloUsuarios}
-            listarUsuarios={listarUsuarios}
             handleChange={handleChange}
             setModalInsertar={setModalInsertar}
             isOpen={modalInsertar}
+            setNewVal={setNewVal}
+            newVal={newVal}
+            BASE_URL={BASE_URL}
+            PATH_CUSTOMERS={PATH_CUSTOMERS}
           />
           <ModalEditarProducto
             usuario={usuario}
-            arregloUsuarios={arregloUsuarios}
             handleChange={handleChange}
             setModalActualizar={setModalActualizar}
             isOpen={modalActualizar}
+            setNewVal={setNewVal}
+            newVal={newVal}
+            BASE_URL={BASE_URL}
+            PATH_CUSTOMERS={PATH_CUSTOMERS}
           />
         </div>
       </Container>

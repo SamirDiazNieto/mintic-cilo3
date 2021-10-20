@@ -13,7 +13,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_PRODUCTOS_VENTAS_PATH;
 
 
-const ModalEditarProducto = ({usuario, arregloUsuarios, handleChange,setModalActualizar,isOpen}) => {
+const ModalEditarProducto = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
    const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
