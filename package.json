@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
+  "name": "package.json",
+=======
   "name": "mintic-cilo3",
+>>>>>>> origin/Development
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +16,11 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^5.3.0",
+<<<<<<< HEAD
+    "react-scripts": "^4.0.3",
+=======
     "react-scripts": "4.0.3",
+>>>>>>> origin/Development
     "reactstrap": "^8.10.0",
     "styled-components": "^5.3.1",
     "web-vitals": "^1.1.2"
@@ -40,5 +48,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< HEAD
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
+=======
   }
+>>>>>>> origin/Development
 }

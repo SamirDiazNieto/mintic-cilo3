@@ -4,9 +4,11 @@ import './index.css';
 import App from './App';
 import VistaTabla from './components/VistaTabla/VistaTabla';
 import ListadoProductos from './components/ListadoProductos/ListadoProductos';
+
+// import reportWebVitals from './reportWebVitals';
 import VistaVenta from './components/VistaVentas/VistaVenta';
 import ListadoUsuarios from './components/ListadoUsuarios/ListadoUsuarios';
-//import reportWebVitals from './reportWebVitals';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './pages/Home';
@@ -18,6 +20,7 @@ export function capturaCampos() {
 	const div_formularios = document.querySelector('.div-formularios');
 	const formulario_register = document.getElementById('formulario-register');
 	const formulario_login = document.getElementById('formulario-login');
+  
 	let arreglo = [];
 	arreglo.push(div_register);
 	arreglo.push(div_login);
@@ -27,7 +30,7 @@ export function capturaCampos() {
 	return arreglo;
 }
 
-ReactDOM.render(
+ReactDOM.render(   
 	<React.StrictMode>
 		<BrowserRouter>
 			<Switch>
@@ -36,6 +39,9 @@ ReactDOM.render(
 				<Route exact path='/dashboard/lista-productos' component={ListadoProductos} />
 				<Route exact path='/dashboard/lista-ventas' component={VistaVenta} />
 				<Route exact path='/dashboard/lista-usuarios' component={ListadoUsuarios} />
+        <Route exact path="/usuarios" component={ListadoUsuarios}/>
+        <Route exact path="/listado-productos" component={ListadoProductos}/> 
+        <Route exact path="/ventas" component={VistaVenta}/>
 				<Route exact component={App} />
 			</Switch>
 		</BrowserRouter>
