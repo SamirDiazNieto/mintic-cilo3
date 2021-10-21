@@ -8,8 +8,7 @@ justify-content: center;
 
 table > :not(caption) > * > * {
     padding: 1.0rem 1.0rem;
-    padding-right: 4rem !important;
-
+    padding-right: 4rem !important
   }
 
 .titulos{
@@ -24,4 +23,15 @@ td{
 th{
   color: #fff;
   font-size: 19px;
+}
+
+@media only screen and (max-width: 1399px) {
+ 
+table > :not(caption) > * > * {
+    padding-right: 0rem !important
+  }
+.btn{
+  padding: 0rem 0rem
+}
+
 }

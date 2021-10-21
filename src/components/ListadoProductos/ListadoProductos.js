@@ -1,28 +1,24 @@
 import React from 'react';
 import './ListadoProductos.css';
-
 import {
   Table,
   Button,
   Container
 } from "reactstrap";
-
 import ModalCrearProducto from '../ModalCrearProducto/ModalCrearProducto';
 import ModalEditarProducto from '../ModalEditarProducto/ModalEditarProducto';
-import Sidebar from '../Dashboard/Sidebar/Sidebar';
 
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
-
   // { id: 1, descripcion: "Producto 1", valor: "1000", estado: "Disponible"},
   // { id: 2, descripcion: "Producto 2", valor: "2000", estado: "Disponible" },
   // { id: 3, descripcion: "Producto 3", valor: "3000", estado: "No Disponible" },
   // { id: 4, descripcion: "Producto 4", valor: "4000", estado: "Disponible"},
   // { id: 5, descripcion: "Producto 5", valor: "5000", estado: "Disponible" }
-
 ];
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_PRODUCTOS_VENTAS_PATH;
+
 
 const ListadoProductos = () => {
   const [modalActualizar, setModalActualizar] = React.useState(false);
@@ -50,6 +46,7 @@ const ListadoProductos = () => {
   };
 
   React.useEffect(() => {
+
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -57,7 +54,7 @@ const ListadoProductos = () => {
       },
     };
     fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-      .then(res => res.json())
+    .then(res => res.json())
       .then(
         (result) => {
           console.log("data del result")
@@ -94,8 +91,8 @@ const ListadoProductos = () => {
     setModalInsertar(true);
   };
 
-  const eliminar = (datoID) => {
-    let id = datoID.target.id;
+  const eliminar = (id) => {
+    //let id = datoID.target.id;
     const requestOptions = {
       method: 'DELETE'
       , headers: { 'Content-Type': 'application/json' }
@@ -103,12 +100,15 @@ const ListadoProductos = () => {
     fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
       .then(result => result.json())
       .then((result) => {
+        
         //setNewVal(newVal + 1);
       }, (error) => {
         console.log(error);
       });
     listarUsuarios();
   };
+  
+
 
   const listarUsuarios = () => {
     // const requestOptions = {
@@ -195,18 +195,23 @@ const ListadoProductos = () => {
           </Table>
           <ModalCrearProducto
             usuario={usuario}
-            arregloUsuarios={arregloUsuarios}
-            listarUsuarios={listarUsuarios}
             handleChange={handleChange}
             setModalInsertar={setModalInsertar}
             isOpen={modalInsertar}
+            setNewVal={setNewVal}
+            newVal={newVal}
+            BASE_URL={BASE_URL}
+            PATH_CUSTOMERS={PATH_CUSTOMERS}
           />
           <ModalEditarProducto
             usuario={usuario}
-            arregloUsuarios={arregloUsuarios}
             handleChange={handleChange}
             setModalActualizar={setModalActualizar}
             isOpen={modalActualizar}
+            setNewVal={setNewVal}
+            newVal={newVal}
+            BASE_URL={BASE_URL}
+            PATH_CUSTOMERS={PATH_CUSTOMERS}
           />
         </div>
       </Container>
@@ -215,44 +220,5 @@ const ListadoProductos = () => {
   );
 }
 
-						<tbody>
-							{usuario.data.map((dato) => (
-								<tr key={dato.id}>
-									<td>{dato.descripcion}</td>
-									<td>{dato.valor}</td>
-									<td>{dato.estado}</td>
-									<td>
-										<Button color='primary' id={dato.id} onClick={mostrarModalActualizar}>
-											Editar
-										</Button>{' '}
-										<Button id={dato.id} color='danger' onClick={eliminar}>
-											Eliminar
-										</Button>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</Table>
-					<ModalCrearProducto
-						usuario={usuario}
-						arregloUsuarios={arregloUsuarios}
-						listarUsuarios={listarUsuarios}
-						handleChange={handleChange}
-						setModalInsertar={setModalInsertar}
-						isOpen={modalInsertar}
-					/>
-					<ModalEditarProducto
-						usuario={usuario}
-						arregloUsuarios={arregloUsuarios}
-						listarUsuarios={listarUsuarios}
-						handleChange={handleChange}
-						setModalActualizar={setModalActualizar}
-						isOpen={modalActualizar}
-					/>
-				</div>
-			</Container>
-		</>
-	);
-};
 
 export default ListadoProductos;
