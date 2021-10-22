@@ -2,7 +2,6 @@ import React from 'react';
 import './ModalCrear.css';
 
 import {
-
   Input,
   Label,
   Button,

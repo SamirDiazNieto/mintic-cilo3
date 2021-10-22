@@ -11,12 +11,15 @@ import {
 
 
 
+
 const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
+
 
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
   const editar = () => {
+
     let usuarioAModificar = { ...usuario.form };
     actualizarCustomer(usuarioAModificar);
     setModalActualizar(false);
@@ -47,7 +50,9 @@ const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal
         </ModalHeader>
 
         <ModalBody>
+
           {/* <FormGroup>
+
             <label>
               Id:
             </label>
@@ -55,9 +60,11 @@ const ModalEditar = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal
               className="form-control"
               readOnly
               type="text"
+
               value={usuario.form._id}
             />
           </FormGroup> */}
+
 
           <FormGroup>
             <label>

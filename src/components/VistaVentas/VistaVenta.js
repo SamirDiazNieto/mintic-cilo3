@@ -1,13 +1,9 @@
 import React from 'react';
 import './VistaVenta.css';
-import {
-  Table,
-  Button,
-  Container,
-
-} from "reactstrap";
+import { Table, Button, Container } from 'reactstrap';
 import ModalCrear from '../ModalCrearVenta/ModalCrear';
 import ModalEditar from '../ModalEditarVenta/ModalEditar';
+import Sidebar from '../Dashboard/Sidebar/Sidebar';
 
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
@@ -147,6 +143,7 @@ const VistaVenta = () => {
 
   return (
     < >
+		<Sidebar />
       <Container>
         <h1 className="titulos">Registro de Ventas</h1>
         <br />
@@ -164,7 +161,9 @@ const VistaVenta = () => {
               <th>Total</th>
               <th>Estado</th>
               <th>Fecha</th>
-              <th>Opciones</th>
+
+              <th>Acciones</th>
+
             </tr>
           </thead>
 
@@ -223,8 +222,7 @@ const VistaVenta = () => {
       
 
     </>
-  );
-            }
-
+  );        
+};
 
 export default VistaVenta;
