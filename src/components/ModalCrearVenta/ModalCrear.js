@@ -15,31 +15,44 @@ import {
 } from "reactstrap";
 
 
-const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
-  const estados = ["en proceso", "cancelada", "entregada"]
-  const listarEstados = estados.map((Producto) =>
-
-    <option name="estado" value={Producto}>{Producto}</option>
-  );
-  const productos = [{ Element: "Pollo", valorUnitario: 2000 },
-  { Element: "carne", valorUnitario: 6000 },
-  { Element: "cerdo", valorUnitario: 10000 }]
-  const listItemsProducto = productos.map((Producto) =>
+const ModalCrear = ({productos, IdVendedor, venta, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
+ 
+  console.log("productos")
+   console.log(productos)
   
+  const estados = ["en proceso", "cancelada", "entregada"]
+  const listarEstados = estados.map((est) =>
 
-    <option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>
+    <option name="estado" value={est}>{est}</option>
   );
-  let IdProducto = 0;
-  const listItemsValor = productos.map((Producto) =>
+  
+  const listItemsProducto = productos.map((Producto) =>{
+  
+    if(Producto.estado==="disponible"){
 
-    <input
+    return (<option name="IdProducto" value={Producto.descripcion}>{Producto.descripcion}</option>)
+    }
+    
+  }
+  );
+  console.log(listItemsProducto)
+  let IdProducto = 0;
+  console.log("venta.form.IdProducto")
+  console.log(venta.form)
+  const listItemsValor = productos.map((Producto) =>{
+  
+    
+     if(Producto.descripcion===venta.form.IdProducto){
+
+    return (<input
       className="form-control"
       readOnly
       name="valorProducto"
       type="text"
-      value={Producto.valorUnitario}
-    />
-  );
+      value={Producto.valor}
+    />)
+     }
+     });
   const cerrarModalInsertar = () => {
     setModalInsertar(false);
   };
@@ -100,7 +113,7 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
 
 
             <Label for="selector">Producto:</Label>
-            <Input type="select" name="IdProducto" onChange={handleChange}>
+            <Input type="select" name="IdProducto"  onChange={handleChange}>
               <option>Selecione un Producto</option>
               {listItemsProducto}
             </Input>
@@ -124,15 +137,9 @@ const ModalCrear = ({IdVendedor, venta, handleChange,setModalInsertar,isOpen, se
             <label>
               Valor Unitario:
             </label>
-            <input
+            
+            {listItemsValor}
 
-              className="form-control"
-              name="precioUnitario"
-              type="number"
-              onChange={handleChange}
-              
-
-            />
           </FormGroup>
 
           <FormGroup style={{ padding: '0px 5px', position: 'relative', float: 'left' }}>

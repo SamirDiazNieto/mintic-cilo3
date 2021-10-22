@@ -16,34 +16,34 @@ import {
 
 
 
-const ModalEditar = ({ IdVendedor, venta, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
+const ModalEditar = ({ productos,IdVendedor, venta, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
   
   console.log(venta)
 
-  const productos = [{ Element: "Pollo", valorUnitario: 2000 },
-  { Element: "carne", valorUnitario: 6000 },
-  { Element: "cerdo", valorUnitario: 10000 },
-  { Element: "cafe", valorUnitario: 20000 }]
-  const listItemsProducto = productos.map((Producto) =>    {
-      if(Producto.Element===venta.form.IdProducto){
-        return (<option name="IdProducto" selected value={Producto.Element}>{Producto.Element}</option>)
+  const listItemsProducto = productos.map((Producto) =>{
+  
+    if(Producto.estado==="disponible"){
+      if(Producto.descripcion===venta.form.IdProducto){
+        return (<option name="IdProducto" selected value={Producto.descripcion}>{Producto.descripcion}</option>)
       }
       else{
-        return (<option name="IdProducto" value={Producto.Element}>{Producto.Element}</option>)
+        return (<option name="IdProducto" value={Producto.descripcion}>{Producto.descripcion}</option>)
       }
-  
-      
+
+    
     }
+    
+  }
   );
   console.log(venta)
 
   const estados = ["en proceso", "cancelada", "entregada"]
-  const listarEstados = estados.map((Producto) =>{
-  if(Producto===venta.form.estado){
-    return (<option name="estado" selected value={Producto}>{Producto}</option>)
+  const listarEstados = estados.map((est) =>{
+  if(est===venta.form.estado){
+    return (<option name="estado" selected value={est}>{est}</option>)
   }
   else{
-    return (<option name="estado" value={Producto}>{Producto}</option>)
+    return (<option name="estado" value={est}>{est}</option>)
   }
 
    
