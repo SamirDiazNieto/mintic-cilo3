@@ -54,8 +54,8 @@ const Sidebar = () => {
 					<NavIcon to='#'>
 						<FaIcons.FaBars onClick={showSidebar} />
 					</NavIcon>
-					<NavIcon to='/' activeStyle>
-						<BiIcons.BiLogOut />
+					<NavIcon to='/home' activeStyle>
+						<BiIcons.BiLogOut  />
 					</NavIcon>
 				</Nav>
 				<SidebarNav sidebar={sidebar}>
@@ -72,5 +72,6 @@ const Sidebar = () => {
 		</>
 	);
 };
+
 
 export default Sidebar;

@@ -7,12 +7,31 @@ import {
   ModalBody,
   FormGroup,
   ModalFooter,
+  Input,
 } from "reactstrap";
 
 
 
 const ModalEditarUsuario = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
-
+  const estados = ["Seleccione una Opción","Pendiente","No Autorizado","Autorizado"]
+  const roles =["Seleccione una Opción","Administrador", "Vendedor"]
+  
+  const listarRoles = roles.map((Rol) =>{
+    if(Rol===usuario.form.rol){
+      return (<option name="rol" selected value={Rol}>{Rol}</option>)
+    }
+    else{
+      return (<option name="rol" value={Rol}>{Rol}</option>)
+    } 
+  });
+  const listarEstados = estados.map((Estado) =>{
+    if(Estado===usuario.form.estado){
+      return (<option name="rol" selected value={Estado}>{Estado}</option>)
+    }
+    else{
+      return (<option name="rol" value={Estado}>{Estado}</option>)
+    } 
+  });
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
@@ -90,25 +109,21 @@ const ModalEditarUsuario = ({usuario, handleChange,setModalActualizar,isOpen, se
           <FormGroup>
           <label>
             Rol:
+            <Input type="select" name ="rol" onChange={handleChange}>
+              {listarRoles}
+            </Input>
           </label>
-          <select name="rol" className="form-control" onChange={handleChange}>
-            <option value="-1">Seleccione una opción</option>
-            <option value="administrador">Administrador</option>
-            <option value="Vendedor">Vendedor</option>            
-          </select>
+          
         </FormGroup>
 
         <FormGroup>
           <label>
             Estado:
           </label>
-          <select name="estado" className="form-control" onChange={handleChange}>
-            <option value="-1">Seleccione una opción</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="noAutorizado">No Autorizado</option>
-            <option value="autorizado">Autorizado</option>
-
-          </select>
+          <Input type="select" name ="estado" onChange={handleChange}>
+              {listarEstados}
+            </Input>
+          
         </FormGroup>
                  
         </ModalBody>

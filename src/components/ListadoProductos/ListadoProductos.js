@@ -7,7 +7,7 @@ import {
 } from "reactstrap";
 import ModalCrearProducto from '../ModalCrearProducto/ModalCrearProducto';
 import ModalEditarProducto from '../ModalEditarProducto/ModalEditarProducto';
-
+import Sidebar from '../Dashboard/Sidebar/Sidebar';
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
   // { id: 1, descripcion: "Producto 1", valor: "1000", estado: "Disponible"},
@@ -157,6 +157,7 @@ const ListadoProductos = () => {
 
   return (
     < >
+    <Sidebar  />
       <Container>
         <h1 className="titulos">Listado Productos</h1>
         <br />
