@@ -11,31 +11,41 @@ import {
 
 
 
-const ModalEditarProducto = ({usuario, arregloUsuarios, listarUsuarios, handleChange,setModalActualizar,isOpen}) => {
+const ModalEditarProducto = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
 
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
   };
   const editar = () => {
-    let contador = 0;
     let usuarioAModificar = { ...usuario.form };
-    //let arregloUsuarios = usuario.data;
-    arregloUsuarios.map((registro) => {
-      if (usuarioAModificar.id === registro.id) {
-        arregloUsuarios[contador]= usuarioAModificar;
-      }
-      contador++;
-      return console.log("Edito Correctamente");
-    });
-    listarUsuarios(arregloUsuarios);
+    actualizarCustomer(usuarioAModificar);
     setModalActualizar(false);
     
   };
 
+   const actualizarCustomer = (customer) => {
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(customer)
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
+      .then(result => result.json())
+      .then(
+        (result) => {
+          setNewVal(newVal + 1);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
   return (
   <Modal isOpen={isOpen}>
         <ModalHeader>
-          <div><h3>Actualizar Producto {usuario.form.id}</h3></div>
+          <div><h3>Actualizar Producto {usuario.form.descripcion}</h3></div>
         </ModalHeader>
 
         <ModalBody>
