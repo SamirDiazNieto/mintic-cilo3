@@ -21,27 +21,32 @@ import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Fir
   const [errors, setErrors] = useState("");
   const history = useHistory();
   const usernameRef = React.useRef(null)
+
+
   useEffect(() => {
-    if (loading) {
-      // maybe trigger a loading screen
-    }
-    if (user) history.replace("/dashboard/lista-productos");
+    console.log("entro a Replace");
+    console.log(user);
+    if (user) history.replace("/dashboard");
   }, [user, loading]);
 
   if (loading) {
+    console.log("entro a if loading")
+    console.log(loading)
     return <Spinner children="" style={{ width: '5rem', height: '5rem', position: 'fixed', top: '17%', left: '38%' } } />;
   } else {
+    console.log("entro a else");
   return(
-    <>
-     {login &&
-            <Spinner children="" style={{ width: '5rem', height: '5rem', position: 'fixed', top: '17%', left: '38%' } } />
-        }
-    {hasError &&
-            <Alert color="warning">
-              {errors}
-            </Alert>
-          }
-          <img className="logo" src={Logo} alt="" />
+    <div className="login">
+    {login &&
+        <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' } } />
+    }
+    <div className="login-container">
+      {hasError &&
+        <Alert color="warning">
+          {errors}
+        </Alert>
+      }
+      <img className="logo" src={Logo} alt="" />
           <h2>Inicia Sesión</h2>
           <input
             type="text"
@@ -69,7 +74,8 @@ import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Fir
           onClick={() => signInWithGoogle(setLogin, setHasError,setErrors)}>
             Login with Google
           </button>
-      </>
+ </div>
+ </div>
     );
  };
 }

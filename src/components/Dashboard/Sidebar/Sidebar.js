@@ -7,6 +7,8 @@ import * as BiIcons from 'react-icons/bi';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
 
 const Nav = styled.div`
 	background: #15171c;
@@ -46,7 +48,17 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
 	const [sidebar, setSidebar] = useState(false);
 	const showSidebar = () => setSidebar(!sidebar);
+	const auth = getAuth();
+	const [user, loading] = useAuthState(auth);
+	const [isOpen, setIsOpen] = useState(false);
 
+	const logout = () => {
+		auth.signOut().then(function () {
+		  console.log("loggedout");
+		}).catch((error) => {
+
+		});
+	  };
 	return (
 		<>
 			<IconContext.Provider value={{ color: '#fff' }}>
@@ -54,9 +66,12 @@ const Sidebar = () => {
 					<NavIcon to='#'>
 						<FaIcons.FaBars onClick={showSidebar} />
 					</NavIcon>
-					{/* <NavIcon to='/' activeStyle>
-						<BiIcons.BiLogOut />
-					</NavIcon> */}
+					{/* <NavItem>
+                <NavbarText>{user.email} {user.displayName? user.displayName:''} </NavbarText>
+              </NavItem> */}
+					<NavIcon to='/' activeStyle>
+						<BiIcons.BiLogOut color="danger" onClick={logout} />
+					</NavIcon> 
 				</Nav>
 				<SidebarNav sidebar={sidebar}>
 					<SidebarWrap>
