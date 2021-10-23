@@ -27,8 +27,7 @@ const ListadoProductos = () => {
   const [newVal, setNewVal] = React.useState(0);
   const [usuario, setUsuario] = React.useState({
     data: data,
-    form: {
-      _id: "",
+    form: { 
       descripcion: "",
       valor: "",
       estado: ""
