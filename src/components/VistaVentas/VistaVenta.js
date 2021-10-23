@@ -16,7 +16,7 @@ const data = [
 const IdVendedor = "Jeison";
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_CUSTOMERS_VENTAS_PATH;
-
+const PATH_CUSTOMERS_PRODUCTOS = process.env.REACT_APP_API_PRODUCTOS_VENTAS_PATH;
 
 const VistaVenta = () => {
   console.log(PATH_CUSTOMERS)
@@ -76,6 +76,45 @@ const VistaVenta = () => {
         (error) => {
           console.log("se presento un erroor en el get")
           console.log(error);
+          //setIsLoaded(true);
+          //setErrors(error);
+        }
+      )
+  }, [newVal]);
+  const [producto, setProducto] = React.useState({
+    data: data,
+    form: {
+      _id: "",
+      descripcion: "",
+      valor: "",
+      estado: ""
+    }
+  });
+  React.useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS_PRODUCTOS}`, requestOptions)
+      .then(res => res.json() )
+      .then(
+        (result) => {
+          console.log("data del result")
+          console.log(result)
+          //setIsLoaded(true);
+          setProducto({
+            ...producto,
+            data: result
+          });
+          console.log("usuario")
+          console.log(producto)
+        },
+        (error) => {
+          console.log("se presento un erroor en el get")
+          console.log(error);
+          
           //setIsLoaded(true);
           //setErrors(error);
         }
@@ -190,6 +229,7 @@ const VistaVenta = () => {
           </tbody>
         </Table >
           <ModalCrear 
+                    productos={producto.data}
                     IdVendedor={IdVendedor}
                     venta={venta}
                     handleChange={handleChange}
@@ -201,6 +241,7 @@ const VistaVenta = () => {
                     PATH_CUSTOMERS={PATH_CUSTOMERS}
           />
           <ModalEditar 
+                    productos={producto.data}
                     IdVendedor={IdVendedor}
                     venta={venta}
                     handleChange={handleChange}
