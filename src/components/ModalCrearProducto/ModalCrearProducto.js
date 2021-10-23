@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 
 
-const ModalCrearProducto = ({ usuario, arregloUsuarios, listarUsuarios, handleChange, setModalInsertar, isOpen }) => {
+const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS }) => {
 
 
   const cerrarModalInsertar = () => {
