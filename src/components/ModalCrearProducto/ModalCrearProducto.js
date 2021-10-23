@@ -18,9 +18,25 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
   };
   const insertar = () => {
     let usuarioACrear = { ...usuario.form };
-    usuarioACrear.id = usuario.data.length + 1;
-    arregloUsuarios.push(usuarioACrear);
-    listarUsuarios(arregloUsuarios);
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(usuarioACrear)
+    };
+    console.log(usuarioACrear);
+    console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+      .then(
+        (response) => {
+          response.json();
+          setNewVal(newVal + 1);
+        },
+        (error) => {
+          // setIsLoaded(true);
+          // setErrors(error);
+        })
     setModalInsertar(false);
   }
 
@@ -31,18 +47,7 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
       </ModalHeader>
 
       <ModalBody>
-        <FormGroup>
-          <label>
-            Id:
-          </label>
-
-          <input
-            className="form-control"
-            readOnly
-            type="text"
-            value={usuario.data.length + 1}
-          />
-        </FormGroup>
+       
         <FormGroup>
           <label>
             Descripción:
@@ -76,8 +81,8 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
           </label>
           <select name="estado" className="form-control" onChange={handleChange}>
             <option value="-1">Seleccione una opción</option>
-            <option value="disponible">Disponible</option>
-            <option value="nodisponible">No disponible</option>
+            <option value="disponible">disponible</option>
+            <option value="nodisponible">nodisponible</option>
 
           </select>
           {/* <input
