@@ -32,7 +32,7 @@ ReactDOM.render(
 		<BrowserRouter>
 			<Switch>
 				<Route exact path='/' component={App} />
-				<Route exact path='/entrar-a-dashboard' component={Dashboard} />
+				<Route exact path='/dashboard' component={Dashboard} />
 				<Route exact path='/dashboard/lista-productos' component={ListadoProductos} />
 				<Route exact path='/dashboard/lista-ventas' component={VistaVenta} />
 				<Route exact path='/dashboard/lista-usuarios' component={ListadoUsuarios} />

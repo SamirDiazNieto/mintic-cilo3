@@ -121,7 +121,7 @@ const ListadoUsuarios = () => {
   }
 
   return (
-    < >
+    <>
       <Container>
         <h1 className="titulos">Listado Usuarios</h1>
         <br />
@@ -182,44 +182,6 @@ const ListadoUsuarios = () => {
         </div>
       </Container>
 
-
-						<tbody>
-							{usuario.data.map((dato) => (
-								<tr key={dato.id}>
-									<td>{dato.nombre}</td>
-
-									<td>{dato.rol}</td>
-									<td>{dato.estado}</td>
-									<td>
-										<Button color='primary' id={dato.id} onClick={mostrarModalActualizar}>
-											Editar
-										</Button>{' '}
-										<Button id={dato.id} color='danger' onClick={eliminar}>
-											Eliminar
-										</Button>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</Table>
-					<ModalCrearUsuario
-						usuario={usuario}
-						arregloUsuarios={arregloUsuarios}
-						listarUsuarios={listarUsuarios}
-						handleChange={handleChange}
-						setModalInsertar={setModalInsertar}
-						isOpen={modalInsertar}
-					/>
-					<ModalEditarUsuario
-						usuario={usuario}
-						arregloUsuarios={arregloUsuarios}
-						listarUsuarios={listarUsuarios}
-						handleChange={handleChange}
-						setModalActualizar={setModalActualizar}
-						isOpen={modalActualizar}
-					/>
-				</div>
-			</Container>
 		</>
 	);
 };

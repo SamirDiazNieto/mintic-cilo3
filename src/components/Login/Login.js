@@ -1,146 +1,91 @@
-import React from 'react';
-import styled from 'styled-components';
-import { NavLink as Link } from 'react-router-dom';
+// import styled from 'styled-components';
+// import { NavLink as Link } from 'react-router-dom';
 import './Login.css';
-
 import Logo from '../../assets/logo.png'
-import { useEffect, useState } from 'react';
-const googleClientId =  '618490195232-hq0bfvk88f9d0g3auskp4399ujdhtq8l.apps.googleusercontent.com';// process.env.REACT_APP_GOOGLE_CLIENT_ID;
- 
-const loadGoogleScript = () => {
- 
-  //loads the Google JavaScript Library
-  (function () {
-      const id = 'google-js';
-      const src = 'https://apis.google.com/js/platform.js';
- 
-      //we have at least one script (React)
-      const firstJs = document.getElementsByTagName('script')[0];
- 
-      //prevent script from loading twice
-      if (document.getElementById(id)) { return; }
-      const js = document.createElement('script'); 
-      js.id = id;
-      js.src = src;
-      js.onload = window.onGoogleScriptLoad; 
-      firstJs.parentNode.insertBefore(js, firstJs);
-  }());    
- 
-} 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Alert } from 'reactstrap';
+import React, { useEffect, useState } from "react";
+// import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { Spinner } from 'reactstrap';
+import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Firebase";
 
-// const Login = () => (
-// <>
-//       <img className="logo" src={Logo} alt="" />
-//       <h2>Inicia Sesión</h2>
-//       <input type="text" placeholder="Correo Electronico" />
-//       <input type="password" placeholder="Contraseña" />
-//       <button>Entrar</button>
-//       <button id="ingreso-gmail" disabled={true}>Ingresar con Gmail</button>
-//   </>
-// );
+ const Login = () => {
 
-const Login = () => {
- 
-  const [gapi, setGapi] = useState();
-  const [googleAuth, setGoogleAuth] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [imageUrl, setImageUrl] = useState();
- 
-  const onSuccess = (googleUser) => {
-    debugger;
-    console.log('result from google', googleUser);
-    setIsLoggedIn(true);
-    const profile = googleUser.getBasicProfile();
-    setName(profile.getName());
-    setEmail(profile.getEmail());
-    setImageUrl(profile.getImageUrl());
-  };
- 
-  const onFailure = () => {
-    setIsLoggedIn(false);
-  }
- 
-  const logOut = () => {
-    (async() => {
-      await googleAuth.signOut();
-      setIsLoggedIn(false);
-      renderSigninButton(gapi);
-    })();
-  };
- 
-  const renderSigninButton = (_gapi) => {
-    _gapi.signin2.render('google-signin', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-      'onsuccess': onSuccess,
-      'onfailure': onFailure 
-    });
-  }
- 
- 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, loading] = useAuthState(auth);
+  const [hasError, setHasError] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [errors, setErrors] = useState("");
+  const history = useHistory();
+  const usernameRef = React.useRef(null)
   useEffect(() => {
- 
-    //window.gapi is available at this point
-    window.onGoogleScriptLoad = () => {
- 
-      const _gapi = window.gapi;
-      setGapi(_gapi);
-
-      console.log("_gapi");
-      console.log(window.gapi);
- 
-      _gapi.load('auth2', () => {
-        (async () => { 
-          const _googleAuth = await _gapi.auth2.init({
-           client_id: googleClientId
-          });
-          setGoogleAuth(_googleAuth);
-          renderSigninButton(_gapi);
-        })();
-      });
+    if (loading) {
+      // maybe trigger a loading screen
     }
- 
-    //ensure everything is set before loading the script
-    loadGoogleScript();
- 
-  }, );
- 
- 
- 
- 
-  return (
+    if (user) history.replace("/dashboard/lista-productos");
+  }, [user, loading]);
+
+  if (loading) {
+    return <Spinner children="" style={{ width: '5rem', height: '5rem', position: 'fixed', top: '17%', left: '38%' } } />;
+  } else {
+  return(
     <>
-    <img className="logo" src={Logo} alt="" />
-           <h2>Inicia Sesión</h2>
-           <input type="text" placeholder="Correo Electronico" />
-           <input type="password" placeholder="Contraseña" />
-           <div className="botones-login"> 
-           <button>Entrar</button>
-           {/* <button id="ingreso-gmail" disabled={true}>Ingresar con Gmail</button> */}
-       
-           {!isLoggedIn &&
-          <div id="google-signin"></div>
+     {login &&
+            <Spinner children="" style={{ width: '5rem', height: '5rem', position: 'fixed', top: '17%', left: '38%' } } />
         }
-           </div>
- 
-        {isLoggedIn &&
-          <div>
-            <div>
-              <img src={imageUrl} alt="google imagen" />
-            </div>
-            <div>{name}</div>
-            <div>{email}</div>
-            <button className='btn-primary' onClick={logOut}>Log Out</button>
-          </div>
-        }
-</>
-  );
+    {hasError &&
+            <Alert color="warning">
+              {errors}
+            </Alert>
+          }
+          <img className="logo" src={Logo} alt="" />
+          <h2>Inicia Sesión</h2>
+          <input
+            type="text"
+            // className="login__textBox"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Correo Electronico"
+            ref={usernameRef}
+          />
+          <input
+            type="password"
+            // className="login__textBox"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Contraseña"
+          />
+          <button
+            // className="login__btn"
+            onClick={() => signInEmailAndPassword(email, password,setLogin,setHasError,setErrors)}
+          >
+            Entrar
+          </button>
+          <button id="ingreso-gmail"  
+          // className="login__btn login__google" 
+          onClick={() => signInWithGoogle(setLogin, setHasError,setErrors)}>
+            Login with Google
+          </button>
+      </>
+    );
+ };
 }
+
+ Login.propTypes = {
+  type: PropTypes.string, // default: 'border'
+  size: PropTypes.string,
+  color: PropTypes.string,
+  className: PropTypes.string,
+  cssModule: PropTypes.object,
+  children: PropTypes.string, // default: 'Loading...'
+};
+
+Login.defaultProps = {};
+
+
  
 export default Login;
 
