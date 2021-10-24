@@ -3,7 +3,7 @@
 import './App.css';
 import BannerLogin from './components/BannerLogin/BannerLogin';
 import BannerRegistro from './components/BannerRegistro/BannerRegistro';
-import Login from './components/Login/Login';
+import {Login} from './components/Login/Login';
 import Register from './components/Register/Register';
 
 import {capturaCampos} from './index'

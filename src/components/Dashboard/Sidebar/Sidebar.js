@@ -9,6 +9,7 @@ import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
+import { useHistory } from "react-router-dom";
 
 const Nav = styled.div`
 	background: #15171c;
@@ -48,13 +49,15 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
 	const [sidebar, setSidebar] = useState(false);
 	const showSidebar = () => setSidebar(!sidebar);
+	const history = useHistory();
 	const auth = getAuth();
-	const [user, loading] = useAuthState(auth);
-	const [isOpen, setIsOpen] = useState(false);
+	// const [user, loading] = useAuthState(auth);
+	// const [isOpen, setIsOpen] = useState(false);
 
 	const logout = () => {
 		auth.signOut().then(function () {
 		  console.log("loggedout");
+		  history.replace("/");
 		}).catch((error) => {
 
 		});

@@ -9,7 +9,11 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { Spinner } from 'reactstrap';
-import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Firebase";
+import { 
+  auth, 
+  signInEmailAndPassword, 
+  signInWithGoogle,  
+} from "../Firebase/Firebase";
 
  const Login = () => {
 
@@ -23,24 +27,37 @@ import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Fir
   const usernameRef = React.useRef(null)
 
 
+  // const usuarios = () =>{
+  //   const correo = document.getElementById("login-correo");
+  //   setEmail(correo.value)
+  //   console.log(correo.value);
+  // }
+  // const contrasenias = () =>{
+  //   const pass = document.getElementById("login-pass");
+  //   setPassword(pass.value)
+  //   console.log(pass.value);
+  // }
+
+
   useEffect(() => {
-    console.log("entro a Replace");
+    console.log("user");
     console.log(user);
+    console.log("auth");
+    console.log(auth);
     if (user) history.replace("/dashboard");
   }, [user, loading]);
 
   if (loading) {
-    console.log("entro a if loading")
+    console.log("entro a if")
+    console.log("loading")
     console.log(loading)
-    return <Spinner children="" style={{ width: '5rem', height: '5rem', position: 'fixed', top: '17%', left: '38%' } } />;
+    return <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' } } />;
   } else {
-    console.log("entro a else");
+
   return(
-    <div className="login">
-    {login &&
-        <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' } } />
+<>    {login &&
+        <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' , color:'red'} } />
     }
-    <div className="login-container">
       {hasError &&
         <Alert color="warning">
           {errors}
@@ -49,33 +66,32 @@ import { auth, signInEmailAndPassword, signInWithGoogle  } from "../Firebase/Fir
       <img className="logo" src={Logo} alt="" />
           <h2>Inicia Sesión</h2>
           <input
+            id="login-correo"
             type="text"
-            // className="login__textBox"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+             onChange={(e) => setEmail(e.target.value)}
+            // onChange={usuarios}
             placeholder="Correo Electronico"
             ref={usernameRef}
           />
           <input
+            id="login-pass"
             type="password"
-            // className="login__textBox"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            //  onChange={contrasenias}
             placeholder="Contraseña"
           />
           <button
-            // className="login__btn"
-            onClick={() => signInEmailAndPassword(email, password,setLogin,setHasError,setErrors)}
-          >
+          type="button"
+            onClick={() => signInEmailAndPassword(email, password, setLogin, setHasError, setErrors)}>
             Entrar
           </button>
           <button id="ingreso-gmail"  
-          // className="login__btn login__google" 
           onClick={() => signInWithGoogle(setLogin, setHasError,setErrors)}>
             Login with Google
           </button>
- </div>
- </div>
+ </>
     );
  };
 }
@@ -93,5 +109,6 @@ Login.defaultProps = {};
 
 
  
-export default Login;
-
+export {
+  Login,
+};
