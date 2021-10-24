@@ -2,6 +2,7 @@
 // import { NavLink as Link } from 'react-router-dom';
 import './Login.css';
 import Logo from '../../assets/logo.png'
+import Foto from "../../assets/foto-perfil.png"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Alert } from 'reactstrap';
 import React, { useEffect, useState } from "react";
@@ -63,7 +64,7 @@ import {
           {errors}
         </Alert>
       }
-      <img className="logo" src={Logo} alt="" />
+      <img className="logo" src={Foto} alt="" />
           <h2>Inicia Sesión</h2>
           <input
             id="login-correo"
