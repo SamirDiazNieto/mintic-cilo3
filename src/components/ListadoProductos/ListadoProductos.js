@@ -1,4 +1,5 @@
 import React from 'react';
+
 import './ListadoProductos.css';
 import {
   Table,
@@ -26,8 +27,7 @@ const ListadoProductos = () => {
   const [newVal, setNewVal] = React.useState(0);
   const [usuario, setUsuario] = React.useState({
     data: data,
-    form: {
-      _id: "",
+    form: { 
       descripcion: "",
       valor: "",
       estado: ""
@@ -79,8 +79,7 @@ const ListadoProductos = () => {
         userToModify = registro;
       }
       return console.log("Mostro Modal Actualizar");
-    });
-    // listarUsuarios(userToModify);
+    });    
     setUsuario({
       ...usuario,
       form: userToModify
@@ -90,53 +89,22 @@ const ListadoProductos = () => {
   const mostrarModalInsertar = () => {
     setModalInsertar(true);
   };
-
-  const eliminar = (id) => {
-    //let id = datoID.target.id;
-    const requestOptions = {
-      method: 'DELETE'
-      , headers: { 'Content-Type': 'application/json' }
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
-      .then(result => result.json())
-      .then((result) => {
-        
-        //setNewVal(newVal + 1);
-      }, (error) => {
-        console.log(error);
-      });
-    listarUsuarios();
+  
+  const eliminar = (datoID) => {
+    //let arregloUsuarios = usuario.data;
+    arregloUsuarios.map((registro) => {
+      if ( datoID.target.id=== registro._id) {
+        let opcion = window.confirm("¿Está seguro que desea eliminar el Usuario " + registro.nombreUsuario + "?");
+        if (opcion) {
+          borrarCustomer(registro._id);
+        }
+      }
+      return console.log("Elimino Correctamente");
+    });
   };
   
 
-
-  const listarUsuarios = () => {
-    // const requestOptions = {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    // };
-    // fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-    //   .then(res => res.json())
-    //   .then(
-    //     (result) => {
-    //       console.log("data del result")
-    //       console.log(result)
-    //       setUsuario({
-    //         ...usuario,
-    //         data: result
-    //       });
-    //     },
-    //     (error) => {
-    //       console.log("se presento un erroor en el get")
-    //       console.log(error);
-    //     }
-    //   )
-
-  }
-
-  const borrarProducto = (id) => {
+  const borrarCustomer  = (id) => {
     const requestOptions = {
       method: 'DELETE',
       headers: {
@@ -147,7 +115,7 @@ const ListadoProductos = () => {
       .then(result => result.json())
       .then(
         (result) => {
-          setNewVal(newVal + 1);
+         setNewVal(newVal + 1);
         },
         (error) => {
           console.log(error);
@@ -223,3 +191,7 @@ const ListadoProductos = () => {
 
 
 export default ListadoProductos;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 398f0d0ab1dd50003c719a20cc0a804f01092815
