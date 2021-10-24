@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ListadoUsuarios.css';
 import { Table, Button, Container } from 'reactstrap';
 import ModalCrearUsuario from '../ModalCrearUsuario/ModalCrearUsuario';
 import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
+
+import { useMemo } from "react";
 
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
@@ -61,6 +63,7 @@ const ListadoUsuarios = () => {
             ...usuario,
             data: result
           });
+          
         },
         (error) => {
           //setIsLoaded(true);
@@ -83,6 +86,7 @@ const ListadoUsuarios = () => {
      form: userToModify
      });
     setModalActualizar(true);
+    
   };
   const mostrarModalInsertar = () => {
     setModalInsertar(true);
@@ -120,6 +124,11 @@ const ListadoUsuarios = () => {
       );
   }
 
+
+
+
+
+
   return (
     < >
     
@@ -131,6 +140,7 @@ const ListadoUsuarios = () => {
         <br />
         <br />
         <div id="lista">
+        
         <Table >
           <thead className="encabezados">
             <tr>
@@ -183,7 +193,7 @@ const ListadoUsuarios = () => {
           />
         </div>
       </Container>
-
+      
 
 		</>
 	);

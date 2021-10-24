@@ -93,7 +93,7 @@ const ModalCrearUsuario = ({ usuario, handleChange, setModalInsertar, isOpen, se
           </label>
           <select name="rol" className="form-control"  type="text" onChange={handleChange}>
             <option value="-1" type="text">Seleccione una opción</option>
-            <option value="administrador" type="text">Administrador</option>
+            <option value="Administrador" type="text">Administrador</option>
             <option value="Vendedor" type="text">Vendedor</option>            
           </select>
           {/* <input
@@ -110,9 +110,9 @@ const ModalCrearUsuario = ({ usuario, handleChange, setModalInsertar, isOpen, se
           </label>
           <select name="estado" className="form-control" type="text" onChange={handleChange}>
             <option value="-1" type="text">Seleccione una opción</option>
-            <option value="pendiente" type="text"> Pendiente</option>
-            <option value="noAutorizado" type="text">No Autorizado</option>
-            <option value="autorizado" type="text">Autorizado</option>
+            <option value="Pendiente" type="text"> Pendiente</option>
+            <option value="No Autorizado" type="text">No Autorizado</option>
+            <option value="Autorizado" type="text">Autorizado</option>
 
           </select>
           {/* <input
