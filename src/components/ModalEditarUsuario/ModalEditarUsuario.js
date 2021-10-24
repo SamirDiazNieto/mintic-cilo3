@@ -74,7 +74,7 @@ const ModalEditarUsuario = ({usuario, handleChange,setModalActualizar,isOpen, se
             />
           </FormGroup>
 
-          <FormGroup>
+          {/* <FormGroup>
             <label>
               password:
             </label>
@@ -85,7 +85,7 @@ const ModalEditarUsuario = ({usuario, handleChange,setModalActualizar,isOpen, se
               onChange={handleChange}
               value={usuario.form.password}
             />
-          </FormGroup>
+          </FormGroup> */}
 
           <FormGroup>
           <label>

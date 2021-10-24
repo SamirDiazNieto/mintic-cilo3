@@ -51,8 +51,7 @@ const Sidebar = () => {
 	const showSidebar = () => setSidebar(!sidebar);
 	const history = useHistory();
 	const auth = getAuth();
-	// const [user, loading] = useAuthState(auth);
-	// const [isOpen, setIsOpen] = useState(false);
+
 
 	const logout = () => {
 		auth.signOut().then(function () {
@@ -69,9 +68,6 @@ const Sidebar = () => {
 					<NavIcon to='#'>
 						<FaIcons.FaBars onClick={showSidebar} />
 					</NavIcon>
-					{/* <NavItem>
-                <NavbarText>{user.email} {user.displayName? user.displayName:''} </NavbarText>
-              </NavItem> */}
 					<NavIcon to='/' activeStyle>
 						<BiIcons.BiLogOut color="danger" onClick={logout} />
 					</NavIcon> 

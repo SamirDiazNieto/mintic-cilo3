@@ -63,25 +63,18 @@ const signInWithGoogle = (setLogin, setHasError,setErrors) => {
       setErrors(error.message);
       setLogin(false);
     });
+    
 }
 
 const signInEmailAndPassword = (email, password,setLogin,setHasError,setErrors) => {
   setLogin(true);
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
-      //const user = userCredential.user;
-      //const token = userCredential.accessToken;
-      // The signed-in user info.
-      //localStorage.setItem('user', JSON.stringify(user));
 
-
-      // ...
       setLogin(false);
     })
     .catch((error) => {
-      //const errorCode = error.code;
-      //const errorMessage = error.message;
+
       setHasError(true);
       setErrors(error.message);
       setLogin(false);

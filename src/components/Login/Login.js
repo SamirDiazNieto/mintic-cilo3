@@ -2,7 +2,6 @@
 // import { NavLink as Link } from 'react-router-dom';
 import './Login.css';
 import Logo from '../../assets/logo.png'
-import Foto from "../../assets/foto-perfil.png"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Alert } from 'reactstrap';
 import React, { useEffect, useState } from "react";
@@ -26,32 +25,56 @@ import {
   const [errors, setErrors] = useState("");
   const history = useHistory();
   const usernameRef = React.useRef(null)
+// // // // // Prueba para MongoDB
+	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+  const [newVal, setNewVal] = React.useState(0);
 
+   const insertar = () => {  
+     
+     let form = {
+	 	nombreUsuario:user.email,
+	 	password: "",
+	 	rol: "Google",
+	 	estado:"Pendiente"
+	   }
 
-  // const usuarios = () =>{
-  //   const correo = document.getElementById("login-correo");
-  //   setEmail(correo.value)
-  //   console.log(correo.value);
-  // }
-  // const contrasenias = () =>{
-  //   const pass = document.getElementById("login-pass");
-  //   setPassword(pass.value)
-  //   console.log(pass.value);
-  // }
+	 	let usuarioACrear = form ;
+	 	const requestOptions = {
+	 	  method: 'POST',
+	 	  headers: {
+	 		'Content-Type': 'application/json'
+	 	  },
+	 	  body: JSON.stringify(usuarioACrear)
+	 	};
+	 	console.log(usuarioACrear);
+	 	console.log("Google");
+	 	console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
+	 	fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+	 	  .then(
+	 		(response) => {
+	 		  response.json();
+	 		  setNewVal(newVal + 1);
+	 		},
+	 		(error) => {
 
+	 		})
+       
+	   }
+     // // // // // Prueba para MongoDB
 
   useEffect(() => {
-    console.log("user");
-    console.log(user);
-    console.log("auth");
-    console.log(auth);
-    if (user) history.replace("/dashboard");
+
+    if (user) {
+      history.replace("/dashboard");
+      if (user.photoURL) {
+        insertar();
+      }
+    } 
   }, [user, loading]);
 
   if (loading) {
-    console.log("entro a if")
-    console.log("loading")
-    console.log(loading)
+
     return <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' } } />;
   } else {
 
@@ -64,14 +87,13 @@ import {
           {errors}
         </Alert>
       }
-      <img className="logo" src={Foto} alt="" />
+      <img className="logo" src={Logo} alt="" />
           <h2>Inicia Sesión</h2>
           <input
             id="login-correo"
             type="text"
             value={email}
              onChange={(e) => setEmail(e.target.value)}
-            // onChange={usuarios}
             placeholder="Correo Electronico"
             ref={usernameRef}
           />
@@ -80,7 +102,6 @@ import {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            //  onChange={contrasenias}
             placeholder="Contraseña"
           />
           <button
@@ -88,8 +109,10 @@ import {
             onClick={() => signInEmailAndPassword(email, password, setLogin, setHasError, setErrors)}>
             Entrar
           </button>
-          <button id="ingreso-gmail"  
-          onClick={() => signInWithGoogle(setLogin, setHasError,setErrors)}>
+          <button 
+          type="button"
+          id="ingreso-gmail"  
+          onClick={()=>signInWithGoogle(setLogin, setHasError,setErrors)}>
             Login with Google
           </button>
  </>

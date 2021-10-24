@@ -16,8 +16,37 @@ const Register = () =>{
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
   const history = useHistory();
+	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+  const [newVal, setNewVal] = React.useState(0);
+  let form = {
+		nombreUsuario:"",
+		password: "",
+		rol: "",
+		estado:"Pendiente"
+	  }
 
+	const insertar = () => {
+		let usuarioACrear = form ;
+		const requestOptions = {
+		  method: 'POST',
+		  headers: {
+			'Content-Type': 'application/json'
+		  },
+		  body: JSON.stringify(usuarioACrear)
+		};
+		console.log(usuarioACrear);
+		console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
+		fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+		  .then(
+			(response) => {
+			  response.json();
+			  setNewVal(newVal + 1);
+			},
+			(error) => {
 
+			})
+	  }
 
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
@@ -101,11 +130,20 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
-   console.log("Correo= ",correo,"Pass= ",pass,"Confirma= ", confirma)
+   form = {
+    nombreUsuario: email,
+    // password: password,
+    // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
+    password: "password",
+    rol: "Registrado",
+    estado:"Pendiente"
+    }
   
    if (correo && pass &&confirma) {
        console.log("Se agrego mensaje correctamente");
        registerWithEmailAndPassword(email, password);
+       insertar();
+
 
    } else {
        alert("No Se registro correctamente");
@@ -155,4 +193,6 @@ return(
 };
 
 
-export default Register;
+export {
+  Register,
+}; 
