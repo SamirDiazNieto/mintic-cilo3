@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ListadoUsuarios.css';
 import { Table, Button, Container } from 'reactstrap';
 import ModalCrearUsuario from '../ModalCrearUsuario/ModalCrearUsuario';
 import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
 
-
-
-import  { useEffect, useMemo, useRef } from "react";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
 
@@ -20,6 +17,7 @@ const data = [
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+const PATH_CUSTOMERS_USUARIOS = process.env.REACT_APP_API_USUARIOS_PATH;
 
 const ListadoUsuarios = () => {
 
@@ -60,13 +58,52 @@ const ListadoUsuarios = () => {
       .then(
         (result) => {
           //setIsLoaded(true);
-          setUsuario({
+          setUsuarios({
             ...usuario,
             data: result
           });
-          
         },
         (error) => {
+          //setIsLoaded(true);
+          //setErrors(error);
+        }
+      )
+  }, [newVal]);
+  const [Usuarios, setUsuarios] = React.useState({
+    data: data,
+    form: {
+      nombreUsuario: "",
+      password: "",
+      rol: "",
+      estado:""      
+    }
+  });
+
+  React.useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS_USUARIOS}`, requestOptions)
+      .then(res => res.json() )
+      .then(
+        (result) => {
+          console.log("data del result")
+          console.log(result)
+          //setIsLoaded(true);
+          setUsuarios({
+            ...usuario,
+            data: result
+          });
+          console.log("usuario")
+          console.log(usuario)
+        },
+        (error) => {
+          console.log("se presento un error en el get")
+          console.log(error);
+          
           //setIsLoaded(true);
           //setErrors(error);
         }
@@ -87,7 +124,6 @@ const ListadoUsuarios = () => {
      form: userToModify
      });
     setModalActualizar(true);
-    
   };
   const mostrarModalInsertar = () => {
     setModalInsertar(true);
