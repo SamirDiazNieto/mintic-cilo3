@@ -152,7 +152,7 @@ const VistaVenta = () => {
   const eliminar = (e) => {
     arregloVentas.map((registro) => {
       if (e.target.id === registro._id) {
-        let opcion = window.confirm("¿Está seguro que desea eliminar el valor " + registro.firstName + "?");
+        let opcion = window.confirm("¿Está seguro que desea eliminar la compra de  " + registro.nombreCliente + "?");
         if (opcion) {
           borrarCustomer(registro._id);
         }

@@ -120,7 +120,7 @@ const Login = () => {
            <input type="text" placeholder="Correo Electronico" />
            <input type="password" placeholder="Contraseña" />
            <div className="botones-login"> 
-           <button >Entrar</button>
+           <button onClick={window.location.href='/dashboard'}>Entrar</button>
            {/* <button id="ingreso-gmail" disabled={true}>Ingresar con Gmail</button> */}
        
            {!isLoggedIn &&

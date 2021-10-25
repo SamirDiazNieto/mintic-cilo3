@@ -47,9 +47,10 @@ const ModalCrear = ({productos, IdVendedor, venta, handleChange,setModalInsertar
     return (<input
       className="form-control"
       readOnly
-      name="valorProducto"
+      name="precioUnitario"
       type="text"
-      value={Producto.valor}
+      onChange={handleChange}
+      value={venta.form.precioUnitario=Producto.valor}
     />)
      }
      });
@@ -106,6 +107,7 @@ const ModalCrear = ({productos, IdVendedor, venta, handleChange,setModalInsertar
               readOnly
               name="id"
               type="text"
+              onChange={handleChange}
               value={venta.data.length + 1}
             />
           </FormGroup>
