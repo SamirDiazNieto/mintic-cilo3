@@ -82,6 +82,7 @@ import {
 <>    {login &&
         <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' , color:'red'} } />
     }
+
       {hasError &&
         <Alert color="warning">
           {errors}
@@ -118,6 +119,8 @@ import {
  </>
     );
  };
+
+
 }
 
  Login.propTypes = {
