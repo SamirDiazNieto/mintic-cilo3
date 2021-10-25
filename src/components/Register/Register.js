@@ -9,9 +9,10 @@ import {
   registerWithEmailAndPassword,
 } from "../Firebase/Firebase";
 
+import { getAuth } from "firebase/auth";
 
 const Register = () =>{
-
+  const auth = getAuth(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
@@ -19,6 +20,7 @@ const Register = () =>{
 	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
   const [newVal, setNewVal] = React.useState(0);
+  const [errors, setErrors] = React.useState(null);
   let form = {
 		nombreUsuario:"",
 		password: "",
@@ -26,28 +28,30 @@ const Register = () =>{
 		estado:"Pendiente"
 	  }
 
-	const insertar = () => {
-		let usuarioACrear = form ;
-		const requestOptions = {
-		  method: 'POST',
-		  headers: {
-			'Content-Type': 'application/json'
-		  },
-		  body: JSON.stringify(usuarioACrear)
-		};
-		console.log(usuarioACrear);
-		console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-		fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-		  .then(
-			(response) => {
-			  response.json();
-			  setNewVal(newVal + 1);
-			},
-			(error) => {
-
-			})
-	  }
-
+    const insertar = () => {
+      let usuarioACrear = { form };
+      user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(usuarioACrear)
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(
+          (response) => {
+            response.json();
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          })
+        });
+      
+    }
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
   valor === true? registrarUsuario.disabled = true: registrarUsuario.disabled = false;

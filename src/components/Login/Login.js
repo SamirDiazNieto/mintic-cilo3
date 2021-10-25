@@ -30,37 +30,39 @@ import {
 	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
   const [newVal, setNewVal] = React.useState(0);
 
-   const insertar = () => {  
+
+
+     const insertar = () => {
+      
+      let form = {
+      nombreUsuario:user.email,
+      password: "",
+      rol: "",
+      estado:"Pendiente"
+      }
+      let usuarioACrear = form ;
+      user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(usuarioACrear)
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(
+          (response) => {
+            response.json();
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          })
+        });
      
-     let form = {
-	 	nombreUsuario:user.email,
-	 	password: "",
-	 	rol: "Google",
-	 	estado:"Pendiente"
-	   }
-
-	 	let usuarioACrear = form ;
-	 	const requestOptions = {
-	 	  method: 'POST',
-	 	  headers: {
-	 		'Content-Type': 'application/json'
-	 	  },
-	 	  body: JSON.stringify(usuarioACrear)
-	 	};
-	 	console.log(usuarioACrear);
-	 	console.log("Google");
-	 	console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-	 	fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-	 	  .then(
-	 		(response) => {
-	 		  response.json();
-	 		  setNewVal(newVal + 1);
-	 		},
-	 		(error) => {
-
-	 		})
-       
-	   }
+    }
      // // // // // Prueba para MongoDB
 
   useEffect(() => {

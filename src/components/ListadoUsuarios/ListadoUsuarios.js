@@ -4,7 +4,7 @@ import { Table, Button, Container } from 'reactstrap';
 import ModalCrearUsuario from '../ModalCrearUsuario/ModalCrearUsuario';
 import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
-import { useTable } from "react-table";
+
 
 
 import  { useEffect, useMemo, useRef } from "react";
@@ -127,124 +127,68 @@ const ListadoUsuarios = () => {
 
   return (
     <>
-    <Sidebar />
-      <Container>
-        <h1 className="titulos">Listado Usuarios</h1>
-        <br />
-        <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
-        <br />
-        <br />
-        <div id="lista">
-        
-        <Table >
-          <thead className="encabezados">
-            <tr>
-              <th>nombre</th>
-              <th>rol</th>
-              <th>estado</th>
-              <th>opciones</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {usuario.data.map((dato) => (
-              <tr key={dato._id}>
-                <td>{dato.nombreUsuario}</td>
-                
-                <td>{dato.rol}</td>
-                <td>{dato.estado}</td>
-                <td>
-                  <Button
-                    color="primary" id={dato._id}
-                    onClick={mostrarModalActualizar}
-                  >
-                    Editar
-                  </Button>{" "}
-                  <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
-                </td>
+      <Sidebar />
+        <Container>
+          <h1 className="titulos">Listado Usuarios</h1>
+          <br />
+          <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
+          <br />
+          <br />
+          <div id="lista">
+          
+          <Table >
+            <thead className="encabezados">
+              <tr>
+                <th>nombre</th>
+                <th>rol</th>
+                <th>estado</th>
+                <th>opciones</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-          <ModalCrearUsuario 
-                    usuario={usuario} 
-                    handleChange={handleChange}
-                    setModalInsertar={setModalInsertar}
-                    isOpen={modalInsertar}
-                    setNewVal={setNewVal}
-                    newVal={newVal}
-                    BASE_URL={BASE_URL}
-                    PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-          <ModalEditarUsuario 
-                    usuario={usuario}
-                    handleChange={handleChange}
-                    setModalActualizar={setModalActualizar}
-                    isOpen={modalActualizar}
-                    setNewVal={setNewVal}
-                    newVal={newVal}
-                    BASE_URL={BASE_URL}
-                    PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-        </div>
-      </Container>
-      
+            </thead>
 
-
-
-      <div className="list row">
-      <div className="col-md-8">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by title"
-            value={searchTitle}
-            onChange={onChangeSearchTitle}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-12 list">
-        <table
-          className="table table-striped table-bordered"
-          {...getTableProps()}
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+            <tbody>
+              {usuario.data.map((dato) => (
+                <tr key={dato._id}>
+                  <td>{dato.nombreUsuario}</td>
+                  
+                  <td>{dato.rol}</td>
+                  <td>{dato.estado}</td>
+                  <td>
+                    <Button
+                      color="primary" id={dato._id}
+                      onClick={mostrarModalActualizar}
+                    >
+                      Editar
+                    </Button>{" "}
+                    <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
+                  </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </Table>
+            <ModalCrearUsuario 
+                      usuario={usuario} 
+                      handleChange={handleChange}
+                      setModalInsertar={setModalInsertar}
+                      isOpen={modalInsertar}
+                      setNewVal={setNewVal}
+                      newVal={newVal}
+                      BASE_URL={BASE_URL}
+                      PATH_CUSTOMERS={PATH_CUSTOMERS}
+            />
+            <ModalEditarUsuario 
+                      usuario={usuario}
+                      handleChange={handleChange}
+                      setModalActualizar={setModalActualizar}
+                      isOpen={modalActualizar}
+                      setNewVal={setNewVal}
+                      newVal={newVal}
+                      BASE_URL={BASE_URL}
+                      PATH_CUSTOMERS={PATH_CUSTOMERS}
+            />
+          </div>
+        </Container>
+    
 		</>
 	);
 };

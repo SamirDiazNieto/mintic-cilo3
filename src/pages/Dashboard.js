@@ -6,17 +6,9 @@ import Foto from "../assets/foto-perfil.png"
 import { useHistory } from "react-router-dom";
 
 
-
-
-import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
-import { useMemo } from "react";
-import { Button } from 'reactstrap';
-
 function Dashboard() {
 
 	const auth = getAuth();
-
-	
 	const [user] = useAuthState(auth);
 	const history = useHistory();
    
