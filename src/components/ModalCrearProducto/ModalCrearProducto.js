@@ -8,25 +8,30 @@ import {
   FormGroup,
   ModalFooter,
 } from "reactstrap";
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
 
 const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS }) => {
 
-
+  const auth = getAuth(); 
+  const [user, loading, error] = useAuthState(auth);
+  const [errors, setErrors] = React.useState(null);
   const cerrarModalInsertar = () => {
     setModalInsertar(false);
   };
+
+  
   const insertar = () => {
     let usuarioACrear = { ...usuario.form };
+    user.getIdToken(true).then(token => {
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(usuarioACrear)
     };
-    console.log(usuarioACrear);
-    console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
     fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
       .then(
         (response) => {
@@ -34,9 +39,10 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
           setNewVal(newVal + 1);
         },
         (error) => {
-          // setIsLoaded(true);
-          // setErrors(error);
+          //setIsLoaded(true);
+          setErrors(error);
         })
+      });
     setModalInsertar(false);
   }
 

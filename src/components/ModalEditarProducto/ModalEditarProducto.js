@@ -8,10 +8,14 @@ import {
   FormGroup,
   ModalFooter,
 } from "reactstrap";
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
 
 
 const ModalEditarProducto = ({usuario, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
+  
+  const auth = getAuth(); 
+  const [user, loading, error] = useAuthState(auth);
 
   const cerrarModalActualizar = () => {
     setModalActualizar(false);
@@ -23,24 +27,27 @@ const ModalEditarProducto = ({usuario, handleChange,setModalActualizar,isOpen, s
     
   };
 
-   const actualizarCustomer = (customer) => {
-    const requestOptions = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(customer)
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-          setNewVal(newVal + 1);
+  const actualizarCustomer = (customer) => {
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+        body: JSON.stringify(customer)
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
   return (
   <Modal isOpen={isOpen}>
