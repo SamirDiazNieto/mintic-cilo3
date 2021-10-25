@@ -191,7 +191,3 @@ const ListadoProductos = () => {
 
 
 export default ListadoProductos;
-<<<<<<< HEAD
-=======
-
->>>>>>> 398f0d0ab1dd50003c719a20cc0a804f01092815
