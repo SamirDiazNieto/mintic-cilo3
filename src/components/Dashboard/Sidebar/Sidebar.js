@@ -19,6 +19,8 @@ const Nav = styled.div`
 	align-items: center;
 `;
 
+
+
 const NavIcon = styled(Link)`
 	margin-left: 2rem;
 	margin-right: 2rem;
