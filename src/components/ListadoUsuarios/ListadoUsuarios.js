@@ -6,6 +6,7 @@ import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
 import { useTable } from "react-table";
 
+
 import  { useEffect, useMemo, useRef } from "react";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
@@ -124,73 +125,6 @@ const ListadoUsuarios = () => {
       );
   }
 
-
-
-
-
-
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "Status",
-        accessor: "published",
-        Cell: (props) => {
-          return props.value ? "Published" : "Pending";
-        },
-      },
-      {
-        Header: "Actions",
-        accessor: "actions",
-        Cell: (props) => {
-          const rowIdx = props.row.id;
-          return (
-            <div>
-              <span onClick={() => console.log("bopen tutorial")}>
-                <i className="far fa-edit action mr-2"></i>
-              </span>
-
-              <span onClick={() => console.log("borrar tutorial")}>
-                <i className="fas fa-trash action"></i>
-              </span>
-            </div>
-          );
-        },
-      },
-    ],
-    []
-  );
-  
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data: tutorials,
-  });
-  const [tutorials, setTutorials] = useState([]);
-  const [searchTitle, setSearchTitle] = useState("");
-  const tutorialsRef = useRef();
-  const onChangeSearchTitle = (e) => {
-    const searchTitle = e.target.value;
-    setSearchTitle(searchTitle);
-  };
-
-  
-
-
-
   return (
     <>
     <Sidebar />
@@ -255,6 +189,7 @@ const ListadoUsuarios = () => {
         </div>
       </Container>
       
+
 
 
       <div className="list row">
