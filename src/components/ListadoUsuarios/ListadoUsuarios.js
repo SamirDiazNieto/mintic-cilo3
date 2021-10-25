@@ -17,6 +17,7 @@ const data = [
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+const PATH_CUSTOMERS_USUARIOS = process.env.REACT_APP_API_USUARIOS_PATH;
 
 const ListadoUsuarios = () => {
 
@@ -57,12 +58,52 @@ const ListadoUsuarios = () => {
       .then(
         (result) => {
           //setIsLoaded(true);
-          setUsuario({
+          setUsuarios({
             ...usuario,
             data: result
           });
         },
         (error) => {
+          //setIsLoaded(true);
+          //setErrors(error);
+        }
+      )
+  }, [newVal]);
+  const [Usuarios, setUsuarios] = React.useState({
+    data: data,
+    form: {
+      nombreUsuario: "",
+      password: "",
+      rol: "",
+      estado:""      
+    }
+  });
+
+  React.useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS_USUARIOS}`, requestOptions)
+      .then(res => res.json() )
+      .then(
+        (result) => {
+          console.log("data del result")
+          console.log(result)
+          //setIsLoaded(true);
+          setUsuarios({
+            ...usuario,
+            data: result
+          });
+          console.log("usuario")
+          console.log(usuario)
+        },
+        (error) => {
+          console.log("se presento un error en el get")
+          console.log(error);
+          
           //setIsLoaded(true);
           //setErrors(error);
         }
