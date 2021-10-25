@@ -121,13 +121,12 @@ const ListadoUsuarios = () => {
   }
 
   return (
-    < >
-    
+    <>
     <Sidebar />
       <Container>
         <h1 className="titulos">Listado Usuarios</h1>
         <br />
-        <Button color="success" onClick={mostrarModalInsertar}>Crear</Button>
+        <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
         <br />
         <br />
         <div id="lista">
@@ -183,7 +182,6 @@ const ListadoUsuarios = () => {
           />
         </div>
       </Container>
-
 
 		</>
 	);

@@ -1,6 +1,52 @@
-import React from 'react';
 import './Register.css';
 import Logo from '../../assets/logo.png'
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+// import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import {
+  auth,
+  registerWithEmailAndPassword,
+} from "../Firebase/Firebase";
+
+
+const Register = () =>{
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, loading] = useAuthState(auth);
+  const history = useHistory();
+	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+  const [newVal, setNewVal] = React.useState(0);
+  let form = {
+		nombreUsuario:"",
+		password: "",
+		rol: "",
+		estado:"Pendiente"
+	  }
+
+	const insertar = () => {
+		let usuarioACrear = form ;
+		const requestOptions = {
+		  method: 'POST',
+		  headers: {
+			'Content-Type': 'application/json'
+		  },
+		  body: JSON.stringify(usuarioACrear)
+		};
+		console.log(usuarioACrear);
+		console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
+		fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+		  .then(
+			(response) => {
+			  response.json();
+			  setNewVal(newVal + 1);
+			},
+			(error) => {
+
+			})
+	  }
 
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
@@ -25,6 +71,7 @@ function capturaVariables(valor){
        msjCorreo.classList.remove("error");
        msjCorreo.classList.add("exito");
        capturaVariables(false)
+       setEmail(correo.value)
        return true;
    }
  }
@@ -45,6 +92,7 @@ function capturaVariables(valor){
        mensajePass.classList.remove("error");
        mensajePass.classList.add("exito");
        capturaVariables(false)
+       setPassword(pass.value)
        return true;
    }
  }
@@ -78,35 +126,73 @@ function capturaVariables(valor){
    }
  }
  function Registrar() {
+  
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
-   console.log("Correo= ",correo,"Pass= ",pass,"Confirma= ", confirma)
+   form = {
+    nombreUsuario: email,
+    // password: password,
+    // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
+    password: "password",
+    rol: "Registrado",
+    estado:"Pendiente"
+    }
   
    if (correo && pass &&confirma) {
-       alert("Se agrego mensaje correctamente");
+       console.log("Se agrego mensaje correctamente");
+       registerWithEmailAndPassword(email, password);
+       insertar();
+
+
    } else {
-       alert("NO Se agrego mensaje correctamente");
+       alert("No Se registro correctamente");
        capturaVariables(true)
    }
  }
+ useEffect(() => {
+  if (loading) return;
+  if (user) history.replace("/dashboard");
+}, [user, loading]);
 
-
-const Register = () => (
+return(
 <>
   <img className="logo" src={Logo} alt=""/>
   <h2>Regístrate</h2>      
-  <input id="registro-correo" type="text" placeholder="Correo Electronico" onChange={ValidarCorreo} required />
+  <input
+          id="registro-correo"
+          type="text"
+          className="register__textBox"
+          //  value={email}
+          // onChange={(e) => setEmail(e.target.value)}
+          onChange={ValidarCorreo} 
+          required 
+          placeholder="Correo Electronico"
+        />
   <p id="msjCorreo">&nbsp;</p>    
-  <input id="registro-pass" type="password" placeholder="Contraseña" onChange={ValidaPass} required/>
+  <input
+          id="registro-pass"
+          type="password"
+          className="register__textBox"
+          // value={password}
+          // onChange={(e) => setPassword(e.target.value)}
+          onChange={ValidaPass} 
+          required
+          placeholder="Contraseña"
+        />
   <p id="msjPass">&nbsp;</p>
   <input id="registro-confirmar-pass" type="password" placeholder="Confirmar Contraseña" onChange={ValidaConfirmar} required/>
   <p id="msjConfirmar">&nbsp;</p>
   <button  type="button" id="btn-registrase" onClick={Registrar}>Regístrate</button>
-      
+  {/* <button id="registro-gmail"  
+          onClick={signInWithGoogle}>
+            Register Google
+          </button>   */}
 </>
 );
+};
 
 
-
-export default Register;
+export {
+  Register,
+}; 
