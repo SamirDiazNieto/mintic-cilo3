@@ -1,6 +1,7 @@
 import React from 'react';
 import './ModalCrear.css';
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
 import {
   Input,
   Label,
@@ -16,7 +17,9 @@ import {
 
 
 const ModalCrear = ({productos, IdVendedor, venta, handleChange,setModalInsertar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
- 
+  const auth = getAuth(); 
+  const [user, loading, error] = useAuthState(auth);
+  const [errors, setErrors] = React.useState(null);
   console.log("productos")
    console.log(productos)
   
@@ -62,31 +65,33 @@ const ModalCrear = ({productos, IdVendedor, venta, handleChange,setModalInsertar
     return (venta.form.IdProducto)
   }
 
-  const insertar = () => {
-    console.log("insertar Venta")
-    console.log(venta)
-    let ventaACrear = { ...venta.form };
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(ventaACrear)
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+
+const insertar = () => {
+  let ventaACrear = { ...venta.form };
+  user.getIdToken(true).then(token => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(ventaACrear)
+  };
+  fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
     .then(
       (response) => {
         response.json();
         setNewVal(newVal + 1);
       },
       (error) => {
-        console.log("error de subida")
-        console.log(error)
-        // setIsLoaded(true);
-        // setErrors(error);
+        //setIsLoaded(true);
+        setErrors(error);
       })
+    });
   setModalInsertar(false);
-};
+}
+
+
 
 
   return (
