@@ -280,3 +280,15 @@ img {
   align-items: center;
   padding-top: 10px;
 }
+/* ------------------- INICIO ESTILOS DE DASHBOARD ------------------- */
+.imagen-login{
+  max-width: 10% !important;
+  margin: 1rem;
+}
+.bienvenido{
+  text-align: center;
+  padding: 2rem;
+}
+.title-dashboard{
+margin-top: 5rem;
+}

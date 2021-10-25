@@ -26,7 +26,6 @@ const ModalCrearUsuario = ({ usuario, handleChange, setModalInsertar, isOpen, se
       body: JSON.stringify(usuarioACrear)
     };
     console.log(usuarioACrear);
-    console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
     fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
       .then(
         (response) => {
@@ -72,7 +71,7 @@ const ModalCrearUsuario = ({ usuario, handleChange, setModalInsertar, isOpen, se
           />
         </FormGroup>
 
-        <FormGroup>
+        {/* <FormGroup>
           <label>
             password:
           </label>
@@ -85,7 +84,7 @@ const ModalCrearUsuario = ({ usuario, handleChange, setModalInsertar, isOpen, se
             step="any"
             onChange={handleChange}
           />
-        </FormGroup>
+        </FormGroup> */}
 
         <FormGroup>
           <label>

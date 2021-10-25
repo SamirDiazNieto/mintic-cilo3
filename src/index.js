@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
+// import VistaTabla from './components/VistaTabla/VistaTabla';
 
 import ListadoProductos from './components/ListadoProductos/ListadoProductos';
 
@@ -12,6 +13,7 @@ import ListadoUsuarios from './components/ListadoUsuarios/ListadoUsuarios';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 
 import Dashboard from './pages/Dashboard';
 
