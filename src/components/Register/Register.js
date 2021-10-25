@@ -12,7 +12,7 @@ import {
 import { getAuth } from "firebase/auth";
 
 const Register = () =>{
-  const auth = getAuth(); 
+  const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
@@ -27,31 +27,60 @@ const Register = () =>{
 		rol: "",
 		estado:"Pendiente"
 	  }
-
+    
+    
     const insertar = () => {
-      let usuarioACrear = { form };
+      let usuarioACrear = form ;
       user.getIdToken(true).then(token => {
       const requestOptions = {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(usuarioACrear)
       };
+      console.log(usuarioACrear);
+      console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
       fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
         .then(
-          (response) => {
-            response.json();
-            setNewVal(newVal + 1);
-          },
-          (error) => {
-            //setIsLoaded(true);
-            setErrors(error);
-          })
-        });
+        (response) => {
+          response.json();
+          setNewVal(newVal + 1);
+        },
+        (error) => {
+  
+        })
+      });
+      }
+    
+    
+    
+    // const insertar = () => {
       
-    }
+    //   let usuarioACrear = { form };
+    //   user.getIdToken(true).then(token => {
+    //   const requestOptions = {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify(usuarioACrear)
+    //   };
+    //   fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+    //     .then(
+    //       (response) => {
+    //         response.json();
+    //         setNewVal(newVal + 1);
+    //       },
+    //       (error) => {
+    //         //setIsLoaded(true);
+    //         setErrors(error);
+    //       })
+    //     });
+      
+    // }
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
   valor === true? registrarUsuario.disabled = true: registrarUsuario.disabled = false;
@@ -138,8 +167,8 @@ function capturaVariables(valor){
     nombreUsuario: email,
     // password: password,
     // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
-    password: "password",
-    rol: "Registrado",
+    password: "",
+    rol: "",
     estado:"Pendiente"
     }
   
@@ -154,11 +183,11 @@ function capturaVariables(valor){
        capturaVariables(true)
    }
  }
+ 
  useEffect(() => {
   if (loading) return;
-  if (user) history.replace("/dashboard");
+  if (user) history.replace("/");
 }, [user, loading]);
-
 return(
 <>
   <img className="logo" src={Logo} alt=""/>

@@ -4,7 +4,9 @@ import { Table, Button, Container } from 'reactstrap';
 import ModalCrearUsuario from '../ModalCrearUsuario/ModalCrearUsuario';
 import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
+import { useHistory } from "react-router";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
 
@@ -82,8 +84,6 @@ const ListadoUsuarios = () => {
       }
     }));
   };
-<<<<<<< HEAD
-=======
   
   React.useEffect(() => {
     const requestOptions = {
@@ -148,7 +148,6 @@ const ListadoUsuarios = () => {
         }
       )
   }, [newVal]);
->>>>>>> b9d63a247bbc28d507d8420154adb8839ebd4c14
 
   const mostrarModalActualizar = (datoId) => {
     let userToModify;
