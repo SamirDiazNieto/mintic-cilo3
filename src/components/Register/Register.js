@@ -1,18 +1,19 @@
 import './Register.css';
 import Logo from '../../assets/logo.png'
-import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+// import { getAuth } from "firebase/auth";
 import {
   auth,
   registerWithEmailAndPassword,
 } from "../Firebase/Firebase";
 
-import { getAuth } from "firebase/auth";
 
 const Register = () =>{
-  const auth = getAuth();
+
+  //  const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
@@ -29,58 +30,55 @@ const Register = () =>{
 	  }
     
     
-    const insertar = () => {
-      let usuarioACrear = form ;
-      user.getIdToken(true).then(token => {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(usuarioACrear)
-      };
-      console.log(usuarioACrear);
-      console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-        .then(
-        (response) => {
-          response.json();
-          setNewVal(newVal + 1);
-        },
-        (error) => {
-  
-        })
-      });
-      }
-    
-    
-    
     // const insertar = () => {
-      
-    //   let usuarioACrear = { form };
-    //   user.getIdToken(true).then(token => {
+    //   let usuarioACrear = form ;
     //   const requestOptions = {
     //     method: 'POST',
     //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
     //     },
     //     body: JSON.stringify(usuarioACrear)
     //   };
+    //   console.log(usuarioACrear);
+    //   console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
     //   fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
     //     .then(
-    //       (response) => {
-    //         response.json();
-    //         setNewVal(newVal + 1);
-    //       },
-    //       (error) => {
-    //         //setIsLoaded(true);
-    //         setErrors(error);
-    //       })
-    //     });
+    //     (response) => {
+    //       response.json();
+    //       setNewVal(newVal + 1);
+    //     },
+    //     (error) => {
+  
+    //     })
+    //   }
+    
+    
+    
+     const insertar = () => {
       
-    // }
+       let usuarioACrear = { form };
+       user.getIdToken(true).then(token => {
+       const requestOptions = {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+           Authorization: `Bearer ${token}`,
+         },
+         body: JSON.stringify(usuarioACrear)
+       };
+       fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+         .then(
+           (response) => {
+             response.json();
+             setNewVal(newVal + 1);
+           },
+           (error) => {
+            //  setIsLoaded(true);
+             setErrors(error);
+           })
+         });
+      
+     }
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
   valor === true? registrarUsuario.disabled = true: registrarUsuario.disabled = false;
@@ -175,7 +173,9 @@ function capturaVariables(valor){
    if (correo && pass &&confirma) {
        console.log("Se agrego mensaje correctamente");
        registerWithEmailAndPassword(email, password);
-       insertar();
+       setTimeout(() => {
+        insertar();
+       }, 5000); 
 
 
    } else {
@@ -186,7 +186,7 @@ function capturaVariables(valor){
  
  useEffect(() => {
   if (loading) return;
-  if (user) history.replace("/");
+  if (user) history.replace("/dashboard");
 }, [user, loading]);
 return(
 <>
