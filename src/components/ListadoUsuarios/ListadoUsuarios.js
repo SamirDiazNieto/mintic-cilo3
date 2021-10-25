@@ -20,10 +20,13 @@ const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
 const PATH_CUSTOMERS_USUARIOS = process.env.REACT_APP_API_USUARIOS_PATH;
 
 const ListadoUsuarios = () => {
-
+  const auth = getAuth();
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
+  const [errors, setErrors] = React.useState(null);
   const [newVal, setNewVal] = React.useState(0);
+  const [user, loading, error] = useAuthState(auth);
+  const history = useHistory();
   const [usuario, setUsuario] = React.useState({
     data: data,
     form: {
@@ -36,6 +39,40 @@ const ListadoUsuarios = () => {
   });
   let arregloUsuarios = usuario.data;
 
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+  }, [user, loading]);
+ 
+  React.useEffect(() => {
+    if (!user) return history.replace("/");
+    user.getIdToken(true).then(token => {
+      // sessionStorage.setItem("token", token) 
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //setIsLoaded(true);
+            setUsuario({
+              ...usuario,
+              data: result
+            });
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }, [newVal]);
+
   const handleChange = (datosImput) => {
     setUsuario((prevState) => ({
       ...prevState,
@@ -45,70 +82,6 @@ const ListadoUsuarios = () => {
       }
     }));
   };
-  
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //setIsLoaded(true);
-          setUsuarios({
-            ...usuario,
-            data: result
-          });
-        },
-        (error) => {
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
-  const [Usuarios, setUsuarios] = React.useState({
-    data: data,
-    form: {
-      nombreUsuario: "",
-      password: "",
-      rol: "",
-      estado:""      
-    }
-  });
-
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS_USUARIOS}`, requestOptions)
-      .then(res => res.json() )
-      .then(
-        (result) => {
-          console.log("data del result")
-          console.log(result)
-          //setIsLoaded(true);
-          setUsuarios({
-            ...usuario,
-            data: result
-          });
-          console.log("usuario")
-          console.log(usuario)
-        },
-        (error) => {
-          console.log("se presento un error en el get")
-          console.log(error);
-          
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
 
   const mostrarModalActualizar = (datoId) => {
     let userToModify;
@@ -142,23 +115,26 @@ const ListadoUsuarios = () => {
     });
   };
 
-  const borrarCustomer  = (id) => {
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-         setNewVal(newVal + 1);
+  const borrarCustomer = (id) => {
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
 
   return (
