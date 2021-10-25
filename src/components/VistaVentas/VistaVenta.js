@@ -4,7 +4,9 @@ import { Table, Button, Container } from 'reactstrap';
 import ModalCrear from '../ModalCrearVenta/ModalCrear';
 import ModalEditar from '../ModalEditarVenta/ModalEditar';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useHistory } from "react-router";
+import { getAuth } from "firebase/auth";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
  //{ _id: 1, IdProducto: 'cafe', cantidad: 3,precioUnitario:10000, valorTotal:10000, fechaVenta: "2021-10-20", cedulaCliente:11111,nombreCliente: "pablo", estado: "en proceso" , cedulaCliente:11221222, nombreCliente:"pepito", IdVendedor:"samir"},
@@ -19,10 +21,16 @@ const PATH_CUSTOMERS = process.env.REACT_APP_API_CUSTOMERS_VENTAS_PATH;
 const PATH_CUSTOMERS_PRODUCTOS = process.env.REACT_APP_API_PRODUCTOS_VENTAS_PATH;
 
 const VistaVenta = () => {
+  const [newVal, setNewVal] = React.useState(0);
+  const auth = getAuth(); 
+  const [errors, setErrors] = React.useState(null);
+  const [user, loading, error] = useAuthState(auth);
+  const history = useHistory();
   console.log(PATH_CUSTOMERS)
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
-  const [newVal, setNewVal] = React.useState(0);
+
+  
   const [venta, setVenta] = React.useState({
     data: data,
     form: {
@@ -40,6 +48,77 @@ const VistaVenta = () => {
     }
   });
   let arregloVentas = venta.data;
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+  }, [user, loading]);
+  
+  React.useEffect(() => {
+    if (!user) return history.replace("/");
+    user.getIdToken(true).then(token => {
+      // sessionStorage.setItem("token", token) 
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //setIsLoaded(true);
+            setVenta({
+              ...venta,
+              data: result
+            });
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }, [newVal]);
+  const [producto, setProducto] = React.useState({
+    data: data,
+    form: {
+      _id: "",
+      descripcion: "",
+      valor: "",
+      estado: ""
+    }
+  });
+
+  React.useEffect(() => {
+    if (!user) return history.replace("/");
+    user.getIdToken(true).then(token => {
+      // sessionStorage.setItem("token", token) 
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS_PRODUCTOS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //setIsLoaded(true);
+            setProducto({
+              ...producto,
+              data: result
+            });
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }, [newVal]);
 
   const handleChange = (datosImput) => {
     console.log("ejecute handle")
@@ -53,73 +132,6 @@ const VistaVenta = () => {
       }
     }));
   };
-
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-      .then(res => res.json() )
-      .then(
-        (result) => {
-          console.log("data del result")
-          console.log(result)
-          //setIsLoaded(true);
-          setVenta({
-            ...venta,
-            data: result
-          });
-        },
-        (error) => {
-          console.log("se presento un erroor en el get")
-          console.log(error);
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
-  const [producto, setProducto] = React.useState({
-    data: data,
-    form: {
-      _id: "",
-      descripcion: "",
-      valor: "",
-      estado: ""
-    }
-  });
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS_PRODUCTOS}`, requestOptions)
-      .then(res => res.json() )
-      .then(
-        (result) => {
-          console.log("data del result")
-          console.log(result)
-          //setIsLoaded(true);
-          setProducto({
-            ...producto,
-            data: result
-          });
-          console.log("usuario")
-          console.log(producto)
-        },
-        (error) => {
-          console.log("se presento un erroor en el get")
-          console.log(error);
-          
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
 
   const mostrarModalActualizar = (datoId) => {
     let saleToModify;
@@ -152,7 +164,7 @@ const VistaVenta = () => {
   const eliminar = (e) => {
     arregloVentas.map((registro) => {
       if (e.target.id === registro._id) {
-        let opcion = window.confirm("¿Está seguro que desea eliminar el valor " + registro.firstName + "?");
+        let opcion = window.confirm("¿Está seguro que desea eliminar la compra de  " + registro.nombreCliente + "?");
         if (opcion) {
           borrarCustomer(registro._id);
         }
@@ -160,25 +172,28 @@ const VistaVenta = () => {
       return console.log("Elimino Correctamente");
     });
   }
-  const borrarCustomer  = (id) => {
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-         setNewVal(newVal + 1);
+  const borrarCustomer = (id) => {
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
- 
+  
 
   return (
     < >

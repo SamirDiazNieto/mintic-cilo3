@@ -82,6 +82,73 @@ const ListadoUsuarios = () => {
       }
     }));
   };
+<<<<<<< HEAD
+=======
+  
+  React.useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          //setIsLoaded(true);
+          setUsuarios({
+            ...usuario,
+            data: result
+          });
+        },
+        (error) => {
+          //setIsLoaded(true);
+          //setErrors(error);
+        }
+      )
+  }, [newVal]);
+  const [Usuarios, setUsuarios] = React.useState({
+    data: data,
+    form: {
+      nombreUsuario: "",
+      password: "",
+      rol: "",
+      estado:""      
+    }
+  });
+
+  React.useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+    fetch(`${BASE_URL}${PATH_CUSTOMERS_USUARIOS}`, requestOptions)
+      .then(res => res.json() )
+      .then(
+        (result) => {
+          console.log("data del result")
+          console.log(result)
+          //setIsLoaded(true);
+          setUsuarios({
+            ...usuario,
+            data: result
+          });
+          console.log("usuario")
+          console.log(usuario)
+        },
+        (error) => {
+          console.log("se presento un error en el get")
+          console.log(error);
+          
+          //setIsLoaded(true);
+          //setErrors(error);
+        }
+      )
+  }, [newVal]);
+>>>>>>> b9d63a247bbc28d507d8420154adb8839ebd4c14
 
   const mostrarModalActualizar = (datoId) => {
     let userToModify;
@@ -139,67 +206,68 @@ const ListadoUsuarios = () => {
 
   return (
     <>
-    <Sidebar />
-      <Container>
-        <h1 className="titulos">Listado Usuarios</h1>
-        <br />
-        <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
-        <br />
-        <br />
-        <div id="lista">
-        <Table >
-          <thead className="encabezados">
-            <tr>
-              <th>nombre</th>
-              <th>rol</th>
-              <th>estado</th>
-              <th>opciones</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {usuario.data.map((dato) => (
-              <tr key={dato._id}>
-                <td>{dato.nombreUsuario}</td>
-                
-                <td>{dato.rol}</td>
-                <td>{dato.estado}</td>
-                <td>
-                  <Button
-                    color="primary" id={dato._id}
-                    onClick={mostrarModalActualizar}
-                  >
-                    Editar
-                  </Button>{" "}
-                  <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
-                </td>
+      <Sidebar />
+        <Container>
+          <h1 className="titulos">Listado Usuarios</h1>
+          <br />
+          <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
+          <br />
+          <br />
+          <div id="lista">
+          
+          <Table >
+            <thead className="encabezados">
+              <tr>
+                <th>nombre</th>
+                <th>rol</th>
+                <th>estado</th>
+                <th>opciones</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-          <ModalCrearUsuario 
-                    usuario={usuario} 
-                    handleChange={handleChange}
-                    setModalInsertar={setModalInsertar}
-                    isOpen={modalInsertar}
-                    setNewVal={setNewVal}
-                    newVal={newVal}
-                    BASE_URL={BASE_URL}
-                    PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-          <ModalEditarUsuario 
-                    usuario={usuario}
-                    handleChange={handleChange}
-                    setModalActualizar={setModalActualizar}
-                    isOpen={modalActualizar}
-                    setNewVal={setNewVal}
-                    newVal={newVal}
-                    BASE_URL={BASE_URL}
-                    PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-        </div>
-      </Container>
+            </thead>
 
+            <tbody>
+              {usuario.data.map((dato) => (
+                <tr key={dato._id}>
+                  <td>{dato.nombreUsuario}</td>
+                  
+                  <td>{dato.rol}</td>
+                  <td>{dato.estado}</td>
+                  <td>
+                    <Button
+                      color="primary" id={dato._id}
+                      onClick={mostrarModalActualizar}
+                    >
+                      Editar
+                    </Button>{" "}
+                    <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+            <ModalCrearUsuario 
+                      usuario={usuario} 
+                      handleChange={handleChange}
+                      setModalInsertar={setModalInsertar}
+                      isOpen={modalInsertar}
+                      setNewVal={setNewVal}
+                      newVal={newVal}
+                      BASE_URL={BASE_URL}
+                      PATH_CUSTOMERS={PATH_CUSTOMERS}
+            />
+            <ModalEditarUsuario 
+                      usuario={usuario}
+                      handleChange={handleChange}
+                      setModalActualizar={setModalActualizar}
+                      isOpen={modalActualizar}
+                      setNewVal={setNewVal}
+                      newVal={newVal}
+                      BASE_URL={BASE_URL}
+                      PATH_CUSTOMERS={PATH_CUSTOMERS}
+            />
+          </div>
+        </Container>
+    
 		</>
 	);
 };

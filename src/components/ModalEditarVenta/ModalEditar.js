@@ -1,6 +1,7 @@
 import React from 'react';
 import './ModalEditar.css';
-
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
 import {
   Input,
   Label,
@@ -19,7 +20,8 @@ import {
 const ModalEditar = ({ productos,IdVendedor, venta, handleChange,setModalActualizar,isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS}) => {
   
   console.log(venta)
-
+  const auth = getAuth(); 
+  const [user, loading, error] = useAuthState(auth);
   const listItemsProducto = productos.map((Producto) =>{
   
     if(Producto.estado==="disponible"){
@@ -59,44 +61,32 @@ const ModalEditar = ({ productos,IdVendedor, venta, handleChange,setModalActuali
 
   };
   let resultado
-  /* const costoUnitario = () => {
-    console.log(venta.form.IdProducto)
-    //let arregloVentas = venta.data;
-    
-    productos.map((Producto) => {
-      console.log(Producto.Element)
-      if (Producto.Element === venta.form.IdProducto) {
-        console.log(Producto.valorUnitario)
-        resultado = Producto.valorUnitario;
-        
+  
 
-      }
-      
-
-      
-    },
-    console.log(resultado));
-
-  }; */
   const actualizarCustomer = (customer) => {
-    const requestOptions = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(customer)
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-          setNewVal(newVal + 1);
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+        body: JSON.stringify(customer)
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${customer._id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
+
+
 
   return (
     <Modal isOpen={isOpen}>

@@ -9,6 +9,9 @@ import {
 import ModalCrearProducto from '../ModalCrearProducto/ModalCrearProducto';
 import ModalEditarProducto from '../ModalEditarProducto/ModalEditarProducto';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useHistory } from "react-router";
+import { getAuth } from "firebase/auth";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
   // { id: 1, descripcion: "Producto 1", valor: "1000", estado: "Disponible"},
@@ -22,9 +25,13 @@ const PATH_CUSTOMERS = process.env.REACT_APP_API_PRODUCTOS_VENTAS_PATH;
 
 
 const ListadoProductos = () => {
+  const auth = getAuth(); 
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
+  const [errors, setErrors] = React.useState(null);
   const [newVal, setNewVal] = React.useState(0);
+  const [user, loading, error] = useAuthState(auth);
+  const history = useHistory();
   const [usuario, setUsuario] = React.useState({
     data: data,
     form: { 
@@ -35,6 +42,42 @@ const ListadoProductos = () => {
   });
   let arregloUsuarios = usuario.data;
 
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+  }, [user, loading]);
+
+ 
+
+  React.useEffect(() => {
+    if (!user) return history.replace("/");
+    user.getIdToken(true).then(token => {
+      // sessionStorage.setItem("token", token) 
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //setIsLoaded(true);
+            setUsuario({
+              ...usuario,
+              data: result
+            });
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }, [newVal]);
+
   const handleChange = (datosImput) => {
     setUsuario((prevState) => ({
       ...prevState,
@@ -44,32 +87,6 @@ const ListadoProductos = () => {
       }
     }));
   };
-
-  React.useEffect(() => {
-
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-    .then(res => res.json())
-      .then(
-        (result) => {
-          console.log("data del result")
-          console.log(result)
-          setUsuario({
-            ...usuario,
-            data: result
-          });
-        },
-        (error) => {
-          console.log("se presento un erroor en el get")
-          console.log(error);
-        }
-      )
-  }, [newVal]);
 
   const mostrarModalActualizar = (datoId) => {
     debugger
@@ -104,23 +121,26 @@ const ListadoProductos = () => {
   };
   
 
-  const borrarCustomer  = (id) => {
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-         setNewVal(newVal + 1);
+  const borrarCustomer = (id) => {
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
 
   return (
@@ -191,4 +211,3 @@ const ListadoProductos = () => {
 
 
 export default ListadoProductos;
-

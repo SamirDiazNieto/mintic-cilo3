@@ -95,12 +95,13 @@ const ModalEditarUsuario = ({usuario, handleChange,setModalActualizar,isOpen, se
             </label>
             <input
               className="form-control"
-              name="nombre"
+              name="nombreUsuario"
               type="text"
               onChange={handleChange}
               value={usuario.form.nombreUsuario}
-              required
             />
+
+            
           </FormGroup>
 
           {/* <FormGroup>
