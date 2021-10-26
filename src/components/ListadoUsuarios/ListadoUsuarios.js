@@ -7,6 +7,9 @@ import Sidebar from '../Dashboard/Sidebar/Sidebar';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 import { useHistory } from "react-router";
+
+import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
+import useColumns from "../hooks/useColumnsUsuario";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
 
@@ -66,6 +69,11 @@ const ListadoUsuarios = () => {
               ...usuario,
               data: result
             });
+
+            setDataTabla({
+              ...dataTabla,
+              data: result
+            });
           },
           (error) => {
             //setIsLoaded(true);
@@ -76,6 +84,13 @@ const ListadoUsuarios = () => {
   }, [newVal]);
 
   const handleChange = (datosImput) => {
+    setDataTabla((prevState) =>({
+      ...prevState,
+      data: usuario.data
+    
+    
+    })
+    )
     setUsuario((prevState) => ({
       ...prevState,
       form: {
@@ -141,6 +156,57 @@ const ListadoUsuarios = () => {
     });
   }
 
+
+  const columns = useColumns();
+  const [dataTabla, setDataTabla] = React.useState({
+    data: usuario.data
+  
+    
+  });
+  //setTimeout(2000)
+  //const datas =useMemo(() => usuario.data,[])
+  console.log("datas")
+  console.log(dataTabla)
+  
+  var table = useTable({ columns, data:dataTabla.data  }, useGlobalFilter);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state: { globalFilter }
+  } = table;
+  function CarsFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
+    const totalCarsAvailable = preGlobalFilteredRows.length;
+    const [value, setValue] = React.useState(globalFilter);
+  
+  const onFilterChange = useAsyncDebounce(
+  (value) => setGlobalFilter(value || undefined),
+  200
+  );
+  
+  const handleInputChange = (e) => {
+  setValue(e.target.value);
+  onFilterChange(e.target.value);
+  };
+  
+  return (
+  <span className="cars-filter">
+   Buscar Producto:
+    <input
+      size={50}
+      value={value || ""}
+      onChange={handleInputChange}
+      placeholder={`${totalCarsAvailable} Usuarios disponibles...`}
+    />
+  </span>
+  );
+  }
+
+
   return (
     <>
       <Sidebar />
@@ -151,8 +217,85 @@ const ListadoUsuarios = () => {
           <br />
           <br />
           <div id="lista">
+           {/* Añadimos las propiedades a nuestra tabla nativa */}
+ <Table  onCompositionUpdate={handleChange} {...getTableProps()}>
+          <thead className="encabezados">
+          <tr>
+           <th colSpan={4}>
+             <CarsFilter
+               preGlobalFilteredRows={preGlobalFilteredRows}
+               globalFilter={globalFilter}
+               setGlobalFilter={setGlobalFilter}
+             />
+           </th>
+         </tr>
+         
+            {
+              // Recorremos las columnas que previamente definimos
+              headerGroups.map(headerGroup => (
+                // Añadimos las propiedades al conjunto de columnas
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {
+                    // Recorremos cada columna del conjunto para acceder a su información
+                    headerGroup.headers.map((column) => (
+                      // Añadimos las propiedades a cada celda de la cabecera
+                      <th {...column.getHeaderProps()}>
+                        {
+                          // Pintamos el título de nuestra columna (propiedad "Header")
+                          column.render("Header")
+                        }
+                        
+                      </th>
+                      
+                      
+                    ))
+                  }
+                    <th>Opciones</th>
+                </tr>
+                
+              ))
+            }
+          </thead>
+
           
-          <Table >
+        <tbody {...getTableBodyProps()}>
+          {
+            // Recorremos las filas
+            rows.map(row => {
+              // Llamamos a la función que prepara la fila previo renderizado
+              prepareRow(row);
+              return (
+                // Añadimos las propiedades a la fila
+                <tr {...row.getRowProps()}>
+                  {
+                    // Recorremos cada celda de la fila
+                    row.cells.map((cell) => {
+                      // Añadimos las propiedades a cada celda de la fila
+                      return (
+                        <td {...cell.getCellProps()}>
+                          {
+                            // Pintamos el contenido de la celda
+                            cell.render("Cell")
+                          }
+                        </td>
+                      );
+                    })
+                  }
+                  <Button className="text-left text-uppercase m-1 mr-5 " id={row.values._id}
+                      color="primary" 
+                       onClick={mostrarModalActualizar} 
+                    >
+                      Editar
+                    </Button>{" . "}
+                    <Button  className="text-center text-uppercase m-1 ml-5" id={row.values._id} color="danger" onClick={console.log("row"), console.log(row.values._id), eliminar} /* onClick={eliminar} */>Eliminar</Button>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </Table>
+
+          {/* <Table >
             <thead className="encabezados">
               <tr>
                 <th>nombre</th>
@@ -181,7 +324,7 @@ const ListadoUsuarios = () => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </Table> */}
             <ModalCrearUsuario 
                       usuario={usuario} 
                       handleChange={handleChange}

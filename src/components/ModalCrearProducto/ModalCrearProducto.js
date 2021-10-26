@@ -12,7 +12,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 
 const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, setNewVal, newVal,BASE_URL,PATH_CUSTOMERS }) => {
-
+  console.log("usuario")
+  console.log(usuario)
+  console.log(PATH_CUSTOMERS)
+  console.log(BASE_URL)
   const auth = getAuth(); 
   const [user, loading, error] = useAuthState(auth);
   const [errors, setErrors] = React.useState(null);
@@ -23,6 +26,8 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
   
   const insertar = () => {
     let usuarioACrear = { ...usuario.form };
+    console.log("usuarioACrear")
+    console.log(usuarioACrear)
     user.getIdToken(true).then(token => {
     const requestOptions = {
       method: 'POST',

@@ -8,16 +8,16 @@ export default function useColumns() {
       accessor: "_id"
     },
      {
-       Header: "descripcion",
-       accessor: "descripcion"
+       Header: "Usuario",
+       accessor: "nombreUsuario"
      },
      {
-       Header: "estado",
+       Header: "Rol",
+       accessor: "rol"
+     },
+     {
+       Header: "Estado",
        accessor: "estado"
-     },
-     {
-       Header: "valor",
-       accessor: "valor"
      }
      
      

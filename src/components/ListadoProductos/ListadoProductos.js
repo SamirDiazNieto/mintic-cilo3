@@ -18,11 +18,11 @@ import { getAuth } from "firebase/auth";
 
 
 
-import useRows from "../hooks/useRows";
+
+
+// hasta este punto funciona
+import { useTable, useGlobalFilter, useAsyncDebounce } from "react-table";
 import useColumns from "../hooks/useColumns";
-import { useTable } from "react-table";
-
-
 
 
 ////////////////////////////// DATOS DE PRUEBA
@@ -86,8 +86,6 @@ const ListadoProductos = () => {
             setDataTabla({
               ...dataTabla,
               data: result
-            
-            
             });
             
           },
@@ -190,14 +188,45 @@ const [dataTabla, setDataTabla] = React.useState({
 //const datas =useMemo(() => usuario.data,[])
 console.log("datas")
 console.log(dataTabla)
-var table = useTable({ columns, data:dataTabla.data  });
+
+var table = useTable({ columns, data:dataTabla.data  }, useGlobalFilter);
 const {
   getTableProps,
   getTableBodyProps,
   headerGroups,
   rows,
-  prepareRow
+  prepareRow,
+  preGlobalFilteredRows,
+  setGlobalFilter,
+  state: { globalFilter }
 } = table;
+function CarsFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
+  const totalCarsAvailable = preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(globalFilter);
+
+const onFilterChange = useAsyncDebounce(
+(value) => setGlobalFilter(value || undefined),
+200
+);
+
+const handleInputChange = (e) => {
+setValue(e.target.value);
+onFilterChange(e.target.value);
+};
+
+return (
+<span className="cars-filter">
+ Buscar Producto:
+  <input
+    size={50}
+    value={value || ""}
+    onChange={handleInputChange}
+    placeholder={`${totalCarsAvailable} Productos disponibles...`}
+  />
+</span>
+);
+}
+
 //tabla
 
 
@@ -211,62 +240,21 @@ const {
         <br />
         <br />
         <div id="lista">
-          <Table >
-            <thead className="encabezados">
-              <tr>
-                <th>Descripción</th>
-                <th>Valor Unitario</th>
-                <th>Estado</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
 
-            <tbody>
-              {usuario.data.map((dato) => (
-                <tr key={dato._id}>
-                  <td>{dato.descripcion}</td>
-                  <td>{dato.valor}</td>
-                  <td>{dato.estado}</td>
-                  <td>
-                    <Button
-                      color="primary" id={dato._id}
-                      onClick={mostrarModalActualizar}
-                    >
-                      Editar
-                    </Button>{" "}
-                    <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <ModalCrearProducto
-            usuario={usuario}
-            handleChange={handleChange}
-            setModalInsertar={setModalInsertar}
-            isOpen={modalInsertar}
-            setNewVal={setNewVal}
-            newVal={newVal}
-            BASE_URL={BASE_URL}
-            PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-          <ModalEditarProducto
-            usuario={usuario}
-            handleChange={handleChange}
-            setModalActualizar={setModalActualizar}
-            isOpen={modalActualizar}
-            setNewVal={setNewVal}
-            newVal={newVal}
-            BASE_URL={BASE_URL}
-            PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-        </div>
-      </Container>
 
-      <Container>
-            {/* Añadimos las propiedades a nuestra tabla nativa */}
-        <table  onCompositionUpdate={handleChange} {...getTableProps()}>
-          <thead>
+ {/* Añadimos las propiedades a nuestra tabla nativa */}
+ <Table  onCompositionUpdate={handleChange} {...getTableProps()}>
+          <thead className="encabezados">
+          <tr>
+           <th colSpan={4}>
+             <CarsFilter
+               preGlobalFilteredRows={preGlobalFilteredRows}
+               globalFilter={globalFilter}
+               setGlobalFilter={setGlobalFilter}
+             />
+           </th>
+         </tr>
+         
             {
               // Recorremos las columnas que previamente definimos
               headerGroups.map(headerGroup => (
@@ -287,7 +275,7 @@ const {
                       
                     ))
                   }
-                    
+                    <th>Opciones</th>
                 </tr>
                 
               ))
@@ -318,23 +306,81 @@ const {
                       );
                     })
                   }
-                  <Button id={row.values._id}
+                  <Button className="text-left text-uppercase m-1 mr-5 " id={row.values._id}
                       color="primary" 
                        onClick={mostrarModalActualizar} 
                     >
                       Editar
-                    </Button>{"     "}
-                    <Button id={row.values._id} color="danger" onClick={console.log("row"), console.log(row.values._id), eliminar} /* onClick={eliminar} */>Eliminar</Button>
+                    </Button>{" . "}
+                    <Button  className="text-center text-uppercase m-1 ml-5" id={row.values._id} color="danger" onClick={console.log("row"), console.log(row.values._id), eliminar} /* onClick={eliminar} */>Eliminar</Button>
                 </tr>
               );
             })
           }
         </tbody>
-      </table>
+      </Table>
 
-          <button onClick={handleChange}>
-            clic
-          </button>
+          
+
+         {
+         
+         
+         
+         
+         /*  <Table >
+            <thead className="encabezados">
+              <tr>
+                <th>Descripción</th>
+                <th>Valor Unitario</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {usuario.data.map((dato) => (
+                <tr key={dato._id}>
+                  <td>{dato.descripcion}</td>
+                  <td>{dato.valor}</td>
+                  <td>{dato.estado}</td>
+                  <td>
+                    <Button
+                      color="primary" id={dato._id}
+                      onClick={mostrarModalActualizar}
+                    >
+                      Editar
+                    </Button>{" "}
+                    <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table> */}
+          <ModalCrearProducto
+            usuario={usuario}
+            handleChange={handleChange}
+            setModalInsertar={setModalInsertar}
+            isOpen={modalInsertar}
+            setNewVal={setNewVal}
+            newVal={newVal}
+            BASE_URL={BASE_URL}
+            PATH_CUSTOMERS={PATH_CUSTOMERS}
+          />
+          <ModalEditarProducto
+            usuario={usuario}
+            handleChange={handleChange}
+            setModalActualizar={setModalActualizar}
+            isOpen={modalActualizar}
+            setNewVal={setNewVal}
+            newVal={newVal}
+            BASE_URL={BASE_URL}
+            PATH_CUSTOMERS={PATH_CUSTOMERS}
+          />
+        </div>
+      </Container>
+
+      <Container>
+           
       </Container>
 
     </>
