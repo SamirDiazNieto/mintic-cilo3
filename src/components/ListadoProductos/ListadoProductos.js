@@ -84,8 +84,8 @@ const ListadoProductos = () => {
               data: result
             });
             setDataTabla({
-              ...usuario,
-              data: usuario.data
+              ...dataTabla,
+              data: result
             
             
             });
@@ -318,13 +318,13 @@ const {
                       );
                     })
                   }
-                  <Button
+                  <Button id={row.values._id}
                       color="primary" 
-                      /* onClick={mostrarModalActualizar} */
+                       onClick={mostrarModalActualizar} 
                     >
                       Editar
                     </Button>{"     "}
-                    <Button  color="danger" onClick={console.log("row"), console.log(row)} /* onClick={eliminar} */>Eliminar</Button>
+                    <Button id={row.values._id} color="danger" onClick={console.log("row"), console.log(row.values._id), eliminar} /* onClick={eliminar} */>Eliminar</Button>
                 </tr>
               );
             })
