@@ -13,11 +13,10 @@ import {
 
 const Register = () =>{
 
-  const auth = getAuth();
-  const [user, loading, error] = useAuthState(auth);
+  // const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
+  const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
 	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
@@ -34,6 +33,7 @@ const Register = () =>{
   React.useEffect(() => {
     if (loading) return;
     if (!user) return 
+    
     insertar()
     history.replace("/");
   }, [user, loading]);
@@ -43,6 +43,8 @@ const Register = () =>{
       console.log("form")
       console.log(form)
        let usuarioACrear = { form };
+       console.log("usuarioACrear")
+       console.log(usuarioACrear)
        user.getIdToken(true).then(token => {
        const requestOptions = {
          method: 'POST',
@@ -147,24 +149,19 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
-   form = {
-    nombreUsuario: email,
-    // password: password,
-    // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
-    password: "",
-    rol: "",
-    estado:"Pendiente"
-    }
+
   
    if (correo && pass &&confirma) {
        console.log("Se agrego mensaje correctamente");
        registerWithEmailAndPassword(email, password);
-       setTimeout(() => {
-        console.log("form")
-         console.log(form)
-        insertar();
-       }, 5000); 
-
+       form = {
+        nombreUsuario: email,
+        // password: password,
+        // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
+        password: "",
+        rol: "",
+        estado:"Pendiente"
+        }
 
    } else {
        alert("No Se registro correctamente");
@@ -174,7 +171,13 @@ function capturaVariables(valor){
  
  useEffect(() => {
   if (loading) return;
-  if (user) history.replace("/dashboard");
+  if (user) {
+    console.log("user");
+    console.log(user);
+    insertar();
+    history.replace("/dashboard");
+
+  }
 }, [user, loading]);
 return(
 <>

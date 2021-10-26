@@ -85,69 +85,7 @@ const ListadoUsuarios = () => {
     }));
   };
   
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //setIsLoaded(true);
-          setUsuarios({
-            ...usuario,
-            data: result
-          });
-        },
-        (error) => {
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
-  const [Usuarios, setUsuarios] = React.useState({
-    data: data,
-    form: {
-      nombreUsuario: "",
-      password: "",
-      rol: "",
-      estado:""      
-    }
-  });
 
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS_USUARIOS}`, requestOptions)
-      .then(res => res.json() )
-      .then(
-        (result) => {
-          console.log("data del result")
-          console.log(result)
-          //setIsLoaded(true);
-          setUsuarios({
-            ...usuario,
-            data: result
-          });
-          console.log("usuario")
-          console.log(usuario)
-        },
-        (error) => {
-          console.log("se presento un error en el get")
-          console.log(error);
-          
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
 
   const mostrarModalActualizar = (datoId) => {
     let userToModify;
