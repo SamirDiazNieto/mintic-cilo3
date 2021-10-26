@@ -1,82 +1,21 @@
 import './Register.css';
 import Logo from '../../assets/logo.png'
-import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-// import { getAuth } from "firebase/auth";
 import {
-  // auth,
   registerWithEmailAndPassword,
 } from "../Firebase/Firebase";
 
 
 const Register = () =>{
 
-  // const auth = getAuth();
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
-  // const [userRegister, loadingRegister] = useAuthState(auth);
-  // const history = useHistory();
-	// const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-	// const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
-  // const [newVal, setNewVal] = React.useState(0);
-  // const [errors, setErrors] = React.useState(null);
+  const [login, setLogin] = useState(true);
   const usernameRef = React.useRef(null)
 
     
     
-    // const insertar = () => {
-    //   let usuarioACrear = form ;
-    //   const requestOptions = {
-    //     method: 'POST',
-    //     headers: {
-    //     'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(usuarioACrear)
-    //   };
-    //   console.log(usuarioACrear);
-    //   console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-    //   fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-    //     .then(
-    //     (response) => {
-    //       response.json();
-    //       setNewVal(newVal + 1);
-    //     },
-    //     (error) => {
-  
-    //     })
-    //   }
-    
-    
-    
-    //  const insertarRegister = () => {
-      
-    //    let usuarioACrear = { form };
-    //    console.log("usuarioACrear")
-    //    console.log(usuarioACrear)
-    //    userRegister.getIdToken(true).then(token => {
-    //    const requestOptions = {
-    //      method: 'POST',
-    //      headers: {
-    //        'Content-Type': 'application/json',
-    //        Authorization: `Bearer ${token}`,
-    //      },
-    //      body: JSON.stringify(usuarioACrear)
-    //    };
-    //    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-    //      .then(
-    //        (response) => {
-    //          response.json();
-    //          setNewVal(newVal + 1);
-    //        },
-    //        (error) => {
-    //         //  setIsLoaded(true);
-    //          setErrors(error);
-    //        })
-    //      });
-      
-    //  }
+   
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
   valor === true? registrarUsuario.disabled = true: registrarUsuario.disabled = false;
@@ -159,20 +98,11 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
-   let form = {
-
-	  }
+   
+  
   
    if (correo && pass &&confirma) {
-     registerWithEmailAndPassword(emailRegister, passwordRegister);
-     form = {
-       nombreUsuario: emailRegister,
-       // password: password,
-       // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
-       password: "",
-       rol: "",
-       estado:"Pendiente"
-      }
+     registerWithEmailAndPassword(emailRegister, passwordRegister,setLogin);
       console.log("Se registro correctamente");
 
    } else {
@@ -181,17 +111,7 @@ function capturaVariables(valor){
    }
  }
  
-//  useEffect(() => {
- 
-//   if (userRegister) {
-//     if (!userRegister.displayName) {
-//       console.log("dashborad desde Register");
-//       insertarRegister();
-//     };
-    
-//     history.replace("/dashboard");
-//   }
-// }, [userRegister, loadingRegister]);
+
 return(
 <>
   <img className="logo" src={Logo} alt=""/>
@@ -200,8 +120,6 @@ return(
           id="registro-correo"
           type="text"
           className="register__textBox"
-          //  value={email}
-          // onChange={(e) => setEmailRegister(e.target.value)}
           onChange={ValidarCorreo} 
           required 
           placeholder="Correo Electronico"
@@ -212,8 +130,6 @@ return(
           id="registro-pass"
           type="password"
           className="register__textBox"
-          // value={password}
-          // onChange={(e) => setPasswordRegister(e.target.value)}
           onChange={ValidaPass} 
           required
           placeholder="Contraseña"
@@ -222,10 +138,7 @@ return(
   <input id="registro-confirmar-pass" type="password" placeholder="Confirmar Contraseña" onChange={ValidaConfirmar} required/>
   <p id="msjConfirmar">&nbsp;</p>
   <button  type="button" id="btn-registrase" onClick={Registrar}>Regístrate</button>
-  {/* <button id="registro-gmail"  
-          onClick={signInWithGoogle}>
-            Register Google
-          </button>   */}
+ 
 </>
 );
 };

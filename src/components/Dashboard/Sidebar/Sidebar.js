@@ -51,6 +51,7 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
 	const [sidebar, setSidebar] = useState(false);
 	const showSidebar = () => setSidebar(!sidebar);
+	const [login, setLogin] = useState(false);
 	const history = useHistory();
 	const auth = getAuth();
 
@@ -59,6 +60,7 @@ const Sidebar = () => {
 		auth.signOut().then(function () {
 		  console.log("loggedout");
 		  history.replace("/");
+		  setLogin(false);
 		}).catch((error) => {
 
 		});
