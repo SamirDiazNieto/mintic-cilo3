@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import './ListadoProductos.css';
 import {
@@ -12,6 +12,19 @@ import Sidebar from '../Dashboard/Sidebar/Sidebar';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
 import { getAuth } from "firebase/auth";
+
+
+//TABLA Prueba
+
+
+
+import useRows from "../hooks/useRows";
+import useColumns from "../hooks/useColumns";
+import { useTable } from "react-table";
+
+
+
+
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
   // { id: 1, descripcion: "Producto 1", valor: "1000", estado: "Disponible"},
@@ -25,12 +38,13 @@ const PATH_CUSTOMERS = process.env.REACT_APP_API_PRODUCTOS_VENTAS_PATH;
 
 
 const ListadoProductos = () => {
+
   const auth = getAuth(); 
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
   const [errors, setErrors] = React.useState(null);
   const [newVal, setNewVal] = React.useState(0);
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const history = useHistory();
   const [usuario, setUsuario] = React.useState({
     data: data,
@@ -69,6 +83,13 @@ const ListadoProductos = () => {
               ...usuario,
               data: result
             });
+            setDataTabla({
+              ...usuario,
+              data: usuario.data
+            
+            
+            });
+            
           },
           (error) => {
             //setIsLoaded(true);
@@ -79,13 +100,27 @@ const ListadoProductos = () => {
   }, [newVal]);
 
   const handleChange = (datosImput) => {
+    setDataTabla((prevState) =>({
+      ...prevState,
+      data: usuario.data
+    
+    
+    })
+    )
+    
+    console.log(" handelchandge")
+    console.log(dataTabla)
+    console.log(" tabla")
+    console.log(table)
+    
     setUsuario((prevState) => ({
       ...prevState,
       form: {
         ...prevState.form,
         [datosImput.target.name]: datosImput.target.value,
       }
-    }));
+    }))
+    
   };
 
   const mostrarModalActualizar = (datoId) => {
@@ -142,6 +177,29 @@ const ListadoProductos = () => {
         );
     });
   }
+
+//tabla
+
+const columns = useColumns();
+const [dataTabla, setDataTabla] = React.useState({
+  data: usuario.data
+
+  
+});
+//setTimeout(2000)
+//const datas =useMemo(() => usuario.data,[])
+console.log("datas")
+console.log(dataTabla)
+var table = useTable({ columns, data:dataTabla.data  });
+const {
+  getTableProps,
+  getTableBodyProps,
+  headerGroups,
+  rows,
+  prepareRow
+} = table;
+//tabla
+
 
   return (
     < >
@@ -203,6 +261,80 @@ const ListadoProductos = () => {
             PATH_CUSTOMERS={PATH_CUSTOMERS}
           />
         </div>
+      </Container>
+
+      <Container>
+            {/* Añadimos las propiedades a nuestra tabla nativa */}
+        <table  onCompositionUpdate={handleChange} {...getTableProps()}>
+          <thead>
+            {
+              // Recorremos las columnas que previamente definimos
+              headerGroups.map(headerGroup => (
+                // Añadimos las propiedades al conjunto de columnas
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {
+                    // Recorremos cada columna del conjunto para acceder a su información
+                    headerGroup.headers.map((column) => (
+                      // Añadimos las propiedades a cada celda de la cabecera
+                      <th {...column.getHeaderProps()}>
+                        {
+                          // Pintamos el título de nuestra columna (propiedad "Header")
+                          column.render("Header")
+                        }
+                        
+                      </th>
+                      
+                      
+                    ))
+                  }
+                    
+                </tr>
+                
+              ))
+            }
+          </thead>
+
+          
+        <tbody {...getTableBodyProps()}>
+          {
+            // Recorremos las filas
+            rows.map(row => {
+              // Llamamos a la función que prepara la fila previo renderizado
+              prepareRow(row);
+              return (
+                // Añadimos las propiedades a la fila
+                <tr {...row.getRowProps()}>
+                  {
+                    // Recorremos cada celda de la fila
+                    row.cells.map((cell) => {
+                      // Añadimos las propiedades a cada celda de la fila
+                      return (
+                        <td {...cell.getCellProps()}>
+                          {
+                            // Pintamos el contenido de la celda
+                            cell.render("Cell")
+                          }
+                        </td>
+                      );
+                    })
+                  }
+                  <Button
+                      color="primary" 
+                      /* onClick={mostrarModalActualizar} */
+                    >
+                      Editar
+                    </Button>{"     "}
+                    <Button  color="danger" onClick={console.log("row"), console.log(row)} /* onClick={eliminar} */>Eliminar</Button>
+                </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+
+          <button onClick={handleChange}>
+            clic
+          </button>
       </Container>
 
     </>
