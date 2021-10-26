@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 // import { getAuth } from "firebase/auth";
 import {
-  auth,
+  // auth,
   registerWithEmailAndPassword,
 } from "../Firebase/Firebase";
 
@@ -14,20 +14,16 @@ import {
 const Register = () =>{
 
   // const auth = getAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
-  const history = useHistory();
-	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
-  const [newVal, setNewVal] = React.useState(0);
-  const [errors, setErrors] = React.useState(null);
-  let form = {
-		nombreUsuario:"",
-		password: "",
-		rol: "",
-		estado:"Pendiente"
-	  }
+  const [emailRegister, setEmailRegister] = useState("");
+  const [passwordRegister, setPasswordRegister] = useState("");
+  // const [userRegister, loadingRegister] = useAuthState(auth);
+  // const history = useHistory();
+	// const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+	// const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+  // const [newVal, setNewVal] = React.useState(0);
+  // const [errors, setErrors] = React.useState(null);
+  const usernameRef = React.useRef(null)
+
     
     
     // const insertar = () => {
@@ -54,57 +50,57 @@ const Register = () =>{
     
     
     
-     const insertar = () => {
+    //  const insertarRegister = () => {
       
-       let usuarioACrear = { form };
-       console.log("usuarioACrear")
-       console.log(usuarioACrear)
-       user.getIdToken(true).then(token => {
-       const requestOptions = {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-           Authorization: `Bearer ${token}`,
-         },
-         body: JSON.stringify(usuarioACrear)
-       };
-       fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-         .then(
-           (response) => {
-             response.json();
-             setNewVal(newVal + 1);
-           },
-           (error) => {
-            //  setIsLoaded(true);
-             setErrors(error);
-           })
-         });
+    //    let usuarioACrear = { form };
+    //    console.log("usuarioACrear")
+    //    console.log(usuarioACrear)
+    //    userRegister.getIdToken(true).then(token => {
+    //    const requestOptions = {
+    //      method: 'POST',
+    //      headers: {
+    //        'Content-Type': 'application/json',
+    //        Authorization: `Bearer ${token}`,
+    //      },
+    //      body: JSON.stringify(usuarioACrear)
+    //    };
+    //    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+    //      .then(
+    //        (response) => {
+    //          response.json();
+    //          setNewVal(newVal + 1);
+    //        },
+    //        (error) => {
+    //         //  setIsLoaded(true);
+    //          setErrors(error);
+    //        })
+    //      });
       
-     }
+    //  }
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
   valor === true? registrarUsuario.disabled = true: registrarUsuario.disabled = false;
 }
 
  function ValidarCorreo() {
-  const correo = document.getElementById("registro-correo");
-   let msjCorreo = document.getElementById("msjCorreo");
+  const emailRegister = document.getElementById("registro-correo");
+   let msjemailRegister = document.getElementById("msjCorreo");
 
-   if (!correo.value.includes('@')) {
-       correo.classList.remove("margin-green");
-       correo.classList.add("margin-red");
-       msjCorreo.innerText = "  Ingrese un correo valido.";
-       msjCorreo.classList.remove("exito");
-       msjCorreo.classList.add("error");
+   if (!emailRegister.value.includes('@')) {
+       emailRegister.classList.remove("margin-green");
+       emailRegister.classList.add("margin-red");
+       msjemailRegister.innerText = "  Ingrese un correo valido.";
+       msjemailRegister.classList.remove("exito");
+       msjemailRegister.classList.add("error");
        return false;
    } else {
-       correo.classList.remove("margin-red");
-       correo.classList.add("margin-green");
-       msjCorreo.innerText = "  El correo es valido.";
-       msjCorreo.classList.remove("error");
-       msjCorreo.classList.add("exito");
+       emailRegister.classList.remove("margin-red");
+       emailRegister.classList.add("margin-green");
+       msjemailRegister.innerText = "  El correo es valido.";
+       msjemailRegister.classList.remove("error");
+       msjemailRegister.classList.add("exito");
        capturaVariables(false)
-       setEmail(correo.value)
+       setEmailRegister(emailRegister.value)
        return true;
    }
  }
@@ -125,7 +121,7 @@ function capturaVariables(valor){
        mensajePass.classList.remove("error");
        mensajePass.classList.add("exito");
        capturaVariables(false)
-       setPassword(pass.value)
+       setPasswordRegister(pass.value)
        return true;
    }
  }
@@ -163,19 +159,21 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
+   let form = {
 
+	  }
   
    if (correo && pass &&confirma) {
-       console.log("Se agrego mensaje correctamente");
-       registerWithEmailAndPassword(email, password);
-       form = {
-        nombreUsuario: email,
-        // password: password,
-        // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
-        password: "",
-        rol: "",
-        estado:"Pendiente"
-        }
+     registerWithEmailAndPassword(emailRegister, passwordRegister);
+     form = {
+       nombreUsuario: emailRegister,
+       // password: password,
+       // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
+       password: "",
+       rol: "",
+       estado:"Pendiente"
+      }
+      console.log("Se registro correctamente");
 
    } else {
        alert("No Se registro correctamente");
@@ -183,16 +181,17 @@ function capturaVariables(valor){
    }
  }
  
- useEffect(() => {
-  if (loading) return;
-  if (user) {
-    console.log("user");
-    console.log(user);
-    insertar();
-    history.replace("/dashboard");
-
-  }
-}, [user, loading]);
+//  useEffect(() => {
+ 
+//   if (userRegister) {
+//     if (!userRegister.displayName) {
+//       console.log("dashborad desde Register");
+//       insertarRegister();
+//     };
+    
+//     history.replace("/dashboard");
+//   }
+// }, [userRegister, loadingRegister]);
 return(
 <>
   <img className="logo" src={Logo} alt=""/>
@@ -202,10 +201,11 @@ return(
           type="text"
           className="register__textBox"
           //  value={email}
-          // onChange={(e) => setEmail(e.target.value)}
+          // onChange={(e) => setEmailRegister(e.target.value)}
           onChange={ValidarCorreo} 
           required 
           placeholder="Correo Electronico"
+          ref={usernameRef}
         />
   <p id="msjCorreo">&nbsp;</p>    
   <input
@@ -213,7 +213,7 @@ return(
           type="password"
           className="register__textBox"
           // value={password}
-          // onChange={(e) => setPassword(e.target.value)}
+          // onChange={(e) => setPasswordRegister(e.target.value)}
           onChange={ValidaPass} 
           required
           placeholder="Contraseña"
@@ -233,4 +233,5 @@ return(
 
 export {
   Register,
+  
 }; 

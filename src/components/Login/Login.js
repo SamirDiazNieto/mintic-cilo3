@@ -19,7 +19,7 @@ import {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
+  const [userLogin, loading] = useAuthState(auth);
   const [hasError, setHasError] = useState(false);
   const [login, setLogin] = useState(false);
   const [errors, setErrors] = useState("");
@@ -32,16 +32,16 @@ import {
 
 
 
-     const insertar = () => {
+     const insertarlogin = () => {
       
       let form = {
-      nombreUsuario:user.email,
+      nombreUsuario:userLogin.email,
       password: "",
       rol: "",
       estado:"Pendiente"
       }
       let usuarioACrear = form ;
-      user.getIdToken(true).then(token => {
+      userLogin.getIdToken(true).then(token => {
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -67,13 +67,12 @@ import {
 
   useEffect(() => {
 
-    if (user) {
+    if (userLogin) {
+        insertarlogin();
       history.replace("/dashboard");
-      if (user.photoURL) {
-        insertar();
-      }
+      console.log("dashborad desde Login")
     } 
-  }, [user, loading]);
+  }, [userLogin, loading]);
 
   if (loading) {
 
@@ -140,4 +139,5 @@ Login.defaultProps = {};
  
 export {
   Login,
+  
 };
