@@ -50,6 +50,7 @@ import {
         },
         body: JSON.stringify(usuarioACrear)
       };
+      
       fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
         .then(
           (response) => {
@@ -68,9 +69,13 @@ import {
   useEffect(() => {
 
     if (userLogin) {
-        insertarlogin();
+      
       history.replace("/dashboard");
-      console.log("dashborad desde Login")
+      if (login && auth) {
+        insertarlogin();
+      }
+
+
     } 
   }, [userLogin, loading]);
 
