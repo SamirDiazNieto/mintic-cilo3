@@ -70,7 +70,7 @@ const Sidebar = () => {
 					<NavIcon to='#'>
 						<FaIcons.FaBars onClick={showSidebar} />
 					</NavIcon>
-					<NavIcon to='/' activeStyle>
+					<NavIcon to='/' activestyle>
 						<BiIcons.BiLogOut color="danger" onClick={logout} />
 					</NavIcon> 
 				</Nav>
