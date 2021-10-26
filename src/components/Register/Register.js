@@ -1,17 +1,39 @@
 import './Register.css';
 import Logo from '../../assets/logo.png'
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
+  auth,
   registerWithEmailAndPassword,
 } from "../Firebase/Firebase";
+// import { useHistory } from "react-router-dom";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
+
+let contador = 0;
+const Estado = (estado=1) =>{
+  if (contador===1 && estado ===1 ) return true
+
+return false
+}
 
 const Register = () =>{
-
+  // const [register, setRegister] = useState(false);
+  // const [userLogin, loading] = useAuthState(auth);
+  // const history = useHistory();
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
-  const [login, setLogin] = useState(true);
   const usernameRef = React.useRef(null)
+  
+  // useEffect(() => {
+  //   if (userLogin) {
+  //     if (!register) {
+  //       history.replace("/");
+  //     }
+  //   } 
+  // }, [userLogin, loading]);
+  
+  
+  
 
     
     
@@ -98,19 +120,26 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
+   contador = 0;
    
   
   
    if (correo && pass &&confirma) {
-     registerWithEmailAndPassword(emailRegister, passwordRegister,setLogin);
+     registerWithEmailAndPassword(emailRegister, passwordRegister);
       console.log("Se registro correctamente");
-
+      contador = 1;
+      setTimeout(() => {
+        contador = 0;
+      }, 1000);
+        
    } else {
        alert("No Se registro correctamente");
        capturaVariables(true)
    }
  }
- 
+
+
+
 
 return(
 <>
@@ -146,5 +175,6 @@ return(
 
 export {
   Register,
+  Estado,
   
 }; 

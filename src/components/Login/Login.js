@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { Spinner } from 'reactstrap';
+import { Estado } from '../Register/Register';
 import { 
   auth, 
   signInEmailAndPassword, 
@@ -69,13 +70,11 @@ import {
   useEffect(() => {
 
     if (userLogin) {
-      
+      let result= Estado();
       history.replace("/dashboard");
-      if (login && auth) {
-        insertarlogin();
+      if (login ||result) {
+        insertarlogin()
       }
-
-
     } 
   }, [userLogin, loading]);
 
@@ -85,6 +84,7 @@ import {
   } else {
 
   return(
+    
 <>    {login &&
         <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' , color:'red'} } />
     }
@@ -126,8 +126,9 @@ import {
     );
  };
 
+} 
 
-}
+
 
  Login.propTypes = {
   type: PropTypes.string, // default: 'border'
@@ -144,5 +145,6 @@ Login.defaultProps = {};
  
 export {
   Login,
+
   
 };

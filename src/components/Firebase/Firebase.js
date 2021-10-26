@@ -23,17 +23,14 @@ provider.setCustomParameters({
 initializeApp(firebaseConfig);
 const auth = getAuth();
 
-const registerWithEmailAndPassword = (email, password,setLogin) => {
-  setLogin(true);
+const registerWithEmailAndPassword = (email, password) => {
+  
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      setLogin(false);
     })
     .catch((error) => {
       alert(error.message);
-      setLogin(false);
     });
-
 };
 const resetPassword = (email, handleError,handleSuccess) => {
   try {
