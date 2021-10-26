@@ -13,7 +13,7 @@ import {
 
 const Register = () =>{
 
-  //  const auth = getAuth();
+  // const auth = getAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading] = useAuthState(auth);
@@ -57,6 +57,8 @@ const Register = () =>{
      const insertar = () => {
       
        let usuarioACrear = { form };
+       console.log("usuarioACrear")
+       console.log(usuarioACrear)
        user.getIdToken(true).then(token => {
        const requestOptions = {
          method: 'POST',
@@ -161,22 +163,19 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
-   form = {
-    nombreUsuario: email,
-    // password: password,
-    // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
-    password: "",
-    rol: "",
-    estado:"Pendiente"
-    }
+
   
    if (correo && pass &&confirma) {
        console.log("Se agrego mensaje correctamente");
        registerWithEmailAndPassword(email, password);
-       setTimeout(() => {
-        insertar();
-       }, 5000); 
-
+       form = {
+        nombreUsuario: email,
+        // password: password,
+        // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
+        password: "",
+        rol: "",
+        estado:"Pendiente"
+        }
 
    } else {
        alert("No Se registro correctamente");
@@ -186,7 +185,13 @@ function capturaVariables(valor){
  
  useEffect(() => {
   if (loading) return;
-  if (user) history.replace("/dashboard");
+  if (user) {
+    console.log("user");
+    console.log(user);
+    insertar();
+    history.replace("/dashboard");
+
+  }
 }, [user, loading]);
 return(
 <>
