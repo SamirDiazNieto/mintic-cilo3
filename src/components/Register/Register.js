@@ -4,7 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-// import { getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import {
   auth,
   registerWithEmailAndPassword,
@@ -13,10 +13,11 @@ import {
 
 const Register = () =>{
 
-  //  const auth = getAuth();
+  const auth = getAuth();
+  const [user, loading, error] = useAuthState(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
+ 
   const history = useHistory();
 	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
@@ -30,32 +31,17 @@ const Register = () =>{
 	  }
     
     
-    // const insertar = () => {
-    //   let usuarioACrear = form ;
-    //   const requestOptions = {
-    //     method: 'POST',
-    //     headers: {
-    //     'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(usuarioACrear)
-    //   };
-    //   console.log(usuarioACrear);
-    //   console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-    //   fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-    //     .then(
-    //     (response) => {
-    //       response.json();
-    //       setNewVal(newVal + 1);
-    //     },
-    //     (error) => {
-  
-    //     })
-    //   }
-    
-    
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) return 
+    insertar()
+    history.replace("/");
+  }, [user, loading]);
+
     
      const insertar = () => {
-      
+      console.log("form")
+      console.log(form)
        let usuarioACrear = { form };
        user.getIdToken(true).then(token => {
        const requestOptions = {
@@ -174,6 +160,8 @@ function capturaVariables(valor){
        console.log("Se agrego mensaje correctamente");
        registerWithEmailAndPassword(email, password);
        setTimeout(() => {
+        console.log("form")
+         console.log(form)
         insertar();
        }, 5000); 
 
