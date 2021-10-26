@@ -8,7 +8,7 @@ import * as BsIcons from 'react-icons/bs';
 export const SidebarData = [
 	{
 		titulo: 'Inicio',
-		ruta: '/dashboard/inicio',
+		ruta: '/dashboard',
 		icono: <AiIcons.AiFillHome />,
 	},
 	{

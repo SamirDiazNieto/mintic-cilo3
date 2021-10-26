@@ -1,77 +1,67 @@
 import './Register.css';
 import Logo from '../../assets/logo.png'
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-// import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
   auth,
   registerWithEmailAndPassword,
 } from "../Firebase/Firebase";
+// import { useHistory } from "react-router-dom";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
+
+let contador = 0;
+const Estado = (estado=1) =>{
+  if (contador===1 && estado ===1 ) return true
+
+return false
+}
 
 const Register = () =>{
+  // const [register, setRegister] = useState(false);
+  // const [userLogin, loading] = useAuthState(auth);
+  // const history = useHistory();
+  const [emailRegister, setEmailRegister] = useState("");
+  const [passwordRegister, setPasswordRegister] = useState("");
+  const usernameRef = React.useRef(null)
+  
+  // useEffect(() => {
+  //   if (userLogin) {
+  //     if (!register) {
+  //       history.replace("/");
+  //     }
+  //   } 
+  // }, [userLogin, loading]);
+  
+  
+  
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
-  const history = useHistory();
-	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
-  const [newVal, setNewVal] = React.useState(0);
-  let form = {
-		nombreUsuario:"",
-		password: "",
-		rol: "",
-		estado:"Pendiente"
-	  }
-
-	const insertar = () => {
-		let usuarioACrear = form ;
-		const requestOptions = {
-		  method: 'POST',
-		  headers: {
-			'Content-Type': 'application/json'
-		  },
-		  body: JSON.stringify(usuarioACrear)
-		};
-		console.log(usuarioACrear);
-		console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-		fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-		  .then(
-			(response) => {
-			  response.json();
-			  setNewVal(newVal + 1);
-			},
-			(error) => {
-
-			})
-	  }
-
+    
+    
+   
 function capturaVariables(valor){
   const registrarUsuario = document.getElementById("btn-registrase");
   valor === true? registrarUsuario.disabled = true: registrarUsuario.disabled = false;
 }
 
  function ValidarCorreo() {
-  const correo = document.getElementById("registro-correo");
-   let msjCorreo = document.getElementById("msjCorreo");
+  const emailRegister = document.getElementById("registro-correo");
+   let msjemailRegister = document.getElementById("msjCorreo");
 
-   if (!correo.value.includes('@')) {
-       correo.classList.remove("margin-green");
-       correo.classList.add("margin-red");
-       msjCorreo.innerText = "  Ingrese un correo valido.";
-       msjCorreo.classList.remove("exito");
-       msjCorreo.classList.add("error");
+   if (!emailRegister.value.includes('@')) {
+       emailRegister.classList.remove("margin-green");
+       emailRegister.classList.add("margin-red");
+       msjemailRegister.innerText = "  Ingrese un correo valido.";
+       msjemailRegister.classList.remove("exito");
+       msjemailRegister.classList.add("error");
        return false;
    } else {
-       correo.classList.remove("margin-red");
-       correo.classList.add("margin-green");
-       msjCorreo.innerText = "  El correo es valido.";
-       msjCorreo.classList.remove("error");
-       msjCorreo.classList.add("exito");
+       emailRegister.classList.remove("margin-red");
+       emailRegister.classList.add("margin-green");
+       msjemailRegister.innerText = "  El correo es valido.";
+       msjemailRegister.classList.remove("error");
+       msjemailRegister.classList.add("exito");
        capturaVariables(false)
-       setEmail(correo.value)
+       setEmailRegister(emailRegister.value)
        return true;
    }
  }
@@ -92,7 +82,7 @@ function capturaVariables(valor){
        mensajePass.classList.remove("error");
        mensajePass.classList.add("exito");
        capturaVariables(false)
-       setPassword(pass.value)
+       setPasswordRegister(pass.value)
        return true;
    }
  }
@@ -130,30 +120,26 @@ function capturaVariables(valor){
    let correo = ValidarCorreo();
    let pass = ValidaPass();
    let confirma = ValidaConfirmar();
-   form = {
-    nombreUsuario: email,
-    // password: password,
-    // // // // // PREGUNTAR COMO CAMBIAR EL TIPO String POR PASWORD
-    password: "password",
-    rol: "Registrado",
-    estado:"Pendiente"
-    }
+   contador = 0;
+   
+  
   
    if (correo && pass &&confirma) {
-       console.log("Se agrego mensaje correctamente");
-       registerWithEmailAndPassword(email, password);
-       insertar();
-
-
+     registerWithEmailAndPassword(emailRegister, passwordRegister);
+      console.log("Se registro correctamente");
+      contador = 1;
+      setTimeout(() => {
+        contador = 0;
+      }, 1000);
+        
    } else {
        alert("No Se registro correctamente");
        capturaVariables(true)
    }
  }
- useEffect(() => {
-  if (loading) return;
-  if (user) history.replace("/dashboard");
-}, [user, loading]);
+
+
+
 
 return(
 <>
@@ -163,19 +149,16 @@ return(
           id="registro-correo"
           type="text"
           className="register__textBox"
-          //  value={email}
-          // onChange={(e) => setEmail(e.target.value)}
           onChange={ValidarCorreo} 
           required 
           placeholder="Correo Electronico"
+          ref={usernameRef}
         />
   <p id="msjCorreo">&nbsp;</p>    
   <input
           id="registro-pass"
           type="password"
           className="register__textBox"
-          // value={password}
-          // onChange={(e) => setPassword(e.target.value)}
           onChange={ValidaPass} 
           required
           placeholder="Contraseña"
@@ -184,10 +167,7 @@ return(
   <input id="registro-confirmar-pass" type="password" placeholder="Confirmar Contraseña" onChange={ValidaConfirmar} required/>
   <p id="msjConfirmar">&nbsp;</p>
   <button  type="button" id="btn-registrase" onClick={Registrar}>Regístrate</button>
-  {/* <button id="registro-gmail"  
-          onClick={signInWithGoogle}>
-            Register Google
-          </button>   */}
+ 
 </>
 );
 };
@@ -195,4 +175,6 @@ return(
 
 export {
   Register,
-}; 
+  Estado,
+  
+};

@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { Spinner } from 'reactstrap';
+import { Estado } from '../Register/Register';
 import { 
   auth, 
   signInEmailAndPassword, 
@@ -19,7 +20,7 @@ import {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
+  const [userLogin, loading] = useAuthState(auth);
   const [hasError, setHasError] = useState(false);
   const [login, setLogin] = useState(false);
   const [errors, setErrors] = useState("");
@@ -30,48 +31,52 @@ import {
 	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
   const [newVal, setNewVal] = React.useState(0);
 
-   const insertar = () => {  
+
+
+     const insertarlogin = () => {
+      
+      let form = {
+      nombreUsuario:userLogin.email,
+      password: "",
+      rol: "",
+      estado:"Pendiente"
+      }
+      let usuarioACrear = form ;
+      userLogin.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(usuarioACrear)
+      };
+      
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(
+          (response) => {
+            response.json();
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          })
+        });
      
-     let form = {
-	 	nombreUsuario:user.email,
-	 	password: "",
-	 	rol: "Google",
-	 	estado:"Pendiente"
-	   }
-
-	 	let usuarioACrear = form ;
-	 	const requestOptions = {
-	 	  method: 'POST',
-	 	  headers: {
-	 		'Content-Type': 'application/json'
-	 	  },
-	 	  body: JSON.stringify(usuarioACrear)
-	 	};
-	 	console.log(usuarioACrear);
-	 	console.log("Google");
-	 	console.log(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions);
-	 	fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-	 	  .then(
-	 		(response) => {
-	 		  response.json();
-	 		  setNewVal(newVal + 1);
-	 		},
-	 		(error) => {
-
-	 		})
-       
-	   }
+    }
      // // // // // Prueba para MongoDB
 
   useEffect(() => {
 
-    if (user) {
+    if (userLogin) {
+      let result= Estado();
       history.replace("/dashboard");
-      if (user.photoURL) {
-        insertar();
+      if (login ||result) {
+        insertarlogin()
       }
     } 
-  }, [user, loading]);
+  }, [userLogin, loading]);
 
   if (loading) {
 
@@ -79,6 +84,7 @@ import {
   } else {
 
   return(
+    
 <>    {login &&
         <Spinner children="" style={{ width: '10rem', height: '10rem', position: 'fixed', top: '17%', left: '38%' , color:'red'} } />
     }
@@ -120,8 +126,9 @@ import {
     );
  };
 
+} 
 
-}
+
 
  Login.propTypes = {
   type: PropTypes.string, // default: 'border'
@@ -138,4 +145,6 @@ Login.defaultProps = {};
  
 export {
   Login,
+
+  
 };

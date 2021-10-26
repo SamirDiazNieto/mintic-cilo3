@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ListadoUsuarios.css';
 import { Table, Button, Container } from 'reactstrap';
 import ModalCrearUsuario from '../ModalCrearUsuario/ModalCrearUsuario';
 import ModalEditarUsuario from '../ModalEditarUsuario/ModalEditarUsuario';
 import Sidebar from '../Dashboard/Sidebar/Sidebar';
-import { useTable } from "react-table";
-
-import  { useEffect, useMemo, useRef } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
+import { useHistory } from "react-router";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
 
@@ -19,12 +19,16 @@ const data = [
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
+const PATH_CUSTOMERS_USUARIOS = process.env.REACT_APP_API_USUARIOS_PATH;
 
 const ListadoUsuarios = () => {
-
+  const auth = getAuth();
   const [modalActualizar, setModalActualizar] = React.useState(false);
   const [modalInsertar, setModalInsertar] = React.useState(false);
+  const [errors, setErrors] = React.useState(null);
   const [newVal, setNewVal] = React.useState(0);
+  const [user, loading, error] = useAuthState(auth);
+  const history = useHistory();
   const [usuario, setUsuario] = React.useState({
     data: data,
     form: {
@@ -37,6 +41,40 @@ const ListadoUsuarios = () => {
   });
   let arregloUsuarios = usuario.data;
 
+  React.useEffect(() => {
+    if (loading) return;
+    if (!user) return history.replace("/");
+  }, [user, loading]);
+ 
+  React.useEffect(() => {
+    if (!user) return history.replace("/");
+    user.getIdToken(true).then(token => {
+      // sessionStorage.setItem("token", token) 
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //setIsLoaded(true);
+            setUsuario({
+              ...usuario,
+              data: result
+            });
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }, [newVal]);
+
   const handleChange = (datosImput) => {
     setUsuario((prevState) => ({
       ...prevState,
@@ -47,30 +85,7 @@ const ListadoUsuarios = () => {
     }));
   };
   
-  React.useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          //setIsLoaded(true);
-          setUsuario({
-            ...usuario,
-            data: result
-          });
-          
-        },
-        (error) => {
-          //setIsLoaded(true);
-          //setErrors(error);
-        }
-      )
-  }, [newVal]);
+
 
   const mostrarModalActualizar = (datoId) => {
     let userToModify;
@@ -86,7 +101,6 @@ const ListadoUsuarios = () => {
      form: userToModify
      });
     setModalActualizar(true);
-    
   };
   const mostrarModalInsertar = () => {
     setModalInsertar(true);
@@ -105,211 +119,92 @@ const ListadoUsuarios = () => {
     });
   };
 
-  const borrarCustomer  = (id) => {
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
-      .then(result => result.json())
-      .then(
-        (result) => {
-         setNewVal(newVal + 1);
+  const borrarCustomer = (id) => {
+    user.getIdToken(true).then(token => {
+      const requestOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        (error) => {
-          console.log(error);
-        }
-      );
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}/${id}`, requestOptions)
+        .then(result => result.json())
+        .then(
+          (result) => {
+            setNewVal(newVal + 1);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    });
   }
-
-
-
-
-
-
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "Status",
-        accessor: "published",
-        Cell: (props) => {
-          return props.value ? "Published" : "Pending";
-        },
-      },
-      {
-        Header: "Actions",
-        accessor: "actions",
-        Cell: (props) => {
-          const rowIdx = props.row.id;
-          return (
-            <div>
-              <span onClick={() => console.log("bopen tutorial")}>
-                <i className="far fa-edit action mr-2"></i>
-              </span>
-
-              <span onClick={() => console.log("borrar tutorial")}>
-                <i className="fas fa-trash action"></i>
-              </span>
-            </div>
-          );
-        },
-      },
-    ],
-    []
-  );
-  
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data: tutorials,
-  });
-  const [tutorials, setTutorials] = useState([]);
-  const [searchTitle, setSearchTitle] = useState("");
-  const tutorialsRef = useRef();
-  const onChangeSearchTitle = (e) => {
-    const searchTitle = e.target.value;
-    setSearchTitle(searchTitle);
-  };
-
-  
-
-
 
   return (
     <>
-    <Sidebar />
-      <Container>
-        <h1 className="titulos">Listado Usuarios</h1>
-        <br />
-        <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
-        <br />
-        <br />
-        <div id="lista">
-        
-        <Table >
-          <thead className="encabezados">
-            <tr>
-              <th>nombre</th>
-              <th>rol</th>
-              <th>estado</th>
-              <th>opciones</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {usuario.data.map((dato) => (
-              <tr key={dato._id}>
-                <td>{dato.nombreUsuario}</td>
-                
-                <td>{dato.rol}</td>
-                <td>{dato.estado}</td>
-                <td>
-                  <Button
-                    color="primary" id={dato._id}
-                    onClick={mostrarModalActualizar}
-                  >
-                    Editar
-                  </Button>{" "}
-                  <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
-                </td>
+      <Sidebar />
+        <Container>
+          <h1 className="titulos">Listado Usuarios</h1>
+          <br />
+          <Button disabled={true} color="success" onClick={mostrarModalInsertar}>Crear</Button>
+          <br />
+          <br />
+          <div id="lista">
+          
+          <Table >
+            <thead className="encabezados">
+              <tr>
+                <th>nombre</th>
+                <th>rol</th>
+                <th>estado</th>
+                <th>opciones</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-          <ModalCrearUsuario 
-                    usuario={usuario} 
-                    handleChange={handleChange}
-                    setModalInsertar={setModalInsertar}
-                    isOpen={modalInsertar}
-                    setNewVal={setNewVal}
-                    newVal={newVal}
-                    BASE_URL={BASE_URL}
-                    PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-          <ModalEditarUsuario 
-                    usuario={usuario}
-                    handleChange={handleChange}
-                    setModalActualizar={setModalActualizar}
-                    isOpen={modalActualizar}
-                    setNewVal={setNewVal}
-                    newVal={newVal}
-                    BASE_URL={BASE_URL}
-                    PATH_CUSTOMERS={PATH_CUSTOMERS}
-          />
-        </div>
-      </Container>
-      
+            </thead>
 
-
-      <div className="list row">
-      <div className="col-md-8">
-        <div className="input-group mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search by title"
-            value={searchTitle}
-            onChange={onChangeSearchTitle}
-          />
-          <div className="input-group-append">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              
-            >
-              Search
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-12 list">
-        <table
-          className="table table-striped table-bordered"
-          {...getTableProps()}
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
+            <tbody>
+              {usuario.data.map((dato) => (
+                <tr key={dato._id}>
+                  <td>{dato.nombreUsuario}</td>
+                  
+                  <td>{dato.rol}</td>
+                  <td>{dato.estado}</td>
+                  <td>
+                    <Button
+                      color="primary" id={dato._id}
+                      onClick={mostrarModalActualizar}
+                    >
+                      Editar
+                    </Button>{" "}
+                    <Button id={dato._id} color="danger" onClick={eliminar}>Eliminar</Button>
+                  </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </Table>
+            <ModalCrearUsuario 
+                      usuario={usuario} 
+                      handleChange={handleChange}
+                      setModalInsertar={setModalInsertar}
+                      isOpen={modalInsertar}
+                      setNewVal={setNewVal}
+                      newVal={newVal}
+                      BASE_URL={BASE_URL}
+                      PATH_CUSTOMERS={PATH_CUSTOMERS}
+            />
+            <ModalEditarUsuario 
+                      usuario={usuario}
+                      handleChange={handleChange}
+                      setModalActualizar={setModalActualizar}
+                      isOpen={modalActualizar}
+                      setNewVal={setNewVal}
+                      newVal={newVal}
+                      BASE_URL={BASE_URL}
+                      PATH_CUSTOMERS={PATH_CUSTOMERS}
+            />
+          </div>
+        </Container>
+    
 		</>
 	);
 };

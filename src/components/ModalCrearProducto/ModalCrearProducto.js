@@ -19,6 +19,8 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
   const cerrarModalInsertar = () => {
     setModalInsertar(false);
   };
+
+  
   const insertar = () => {
     let usuarioACrear = { ...usuario.form };
     user.getIdToken(true).then(token => {

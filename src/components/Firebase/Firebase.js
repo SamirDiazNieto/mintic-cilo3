@@ -24,13 +24,13 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 
 const registerWithEmailAndPassword = (email, password) => {
+  
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
     })
     .catch((error) => {
       alert(error.message);
     });
-
 };
 const resetPassword = (email, handleError,handleSuccess) => {
   try {
