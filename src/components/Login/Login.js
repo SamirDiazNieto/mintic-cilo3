@@ -30,9 +30,42 @@ import {
 	const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 	const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
   const [newVal, setNewVal] = React.useState(0);
+  const data =[]
+  const [usuario, setUsuario] = useState();
+  
+  /* React.useEffect(() => {
+    if (!userLogin) {
+    userLogin.getIdToken(true).then(token => {
+      // sessionStorage.setItem("token", token) 
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            //setIsLoaded(true);
+            setUsuario({
+              ...usuario,
+              data: result
+            });
 
-
-
+            
+          },
+          (error) => {
+            //setIsLoaded(true);
+            setErrors(error);
+          }
+        )
+    });
+  }}, [newVal]);
+  
+ */ let banderaCrear=false
+ var [bandera, setBandera]=React.useState(false)
      const insertarlogin = () => {
       
       let form = {
@@ -43,27 +76,78 @@ import {
       }
       let usuarioACrear = form ;
       userLogin.getIdToken(true).then(token => {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(usuarioACrear)
-      };
-      
-      fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
-        .then(
-          (response) => {
-            response.json();
-            setNewVal(newVal + 1);
+        // sessionStorage.setItem("token", token) 
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
-          (error) => {
-            //setIsLoaded(true);
-            setErrors(error);
-          })
-        });
-     
+        };
+        fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+          .then(res => res.json())
+          .then(
+            (result) => {
+              // const bandera1= 
+              result.map((value)=>{
+                console.log(banderaCrear)
+                console.log(value.nombreUsuario)
+                if(value.nombreUsuario===form.nombreUsuario)
+                { console.log("bandera existente")
+                  banderaCrear=true
+                  setBandera(true)
+                  console.log(banderaCrear)
+                  return(true)
+                  //return(true)
+                  }
+  
+                  //console.log(value)
+                  
+              })
+              console.log(bandera)
+              if(banderaCrear===false){
+                userLogin.getIdToken(true).then(token => {
+                const requestOptions = {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify(usuarioACrear)
+                };
+                
+                fetch(`${BASE_URL}${PATH_CUSTOMERS}`, requestOptions)
+                  .then(
+                    (response) => {
+                      response.json();
+                      setNewVal(newVal + 1);
+                    },
+                    (error) => {
+                      //setIsLoaded(true);
+                      setErrors(error);
+                    })
+                  });
+                }
+              //console.log(result)
+              //setIsLoaded(true);
+              setUsuario({
+                 result
+              });
+  
+              console.log("usuario")
+              console.log(usuario)
+            },
+            (error) => {
+              //setIsLoaded(true);
+              setErrors(error);
+            }
+          )
+      });
+      console.log("banderaCrear")
+      console.log(banderaCrear)
+      console.log(bandera)
+      banderaCrear=false
+      console.log(banderaCrear)
     }
      // // // // // Prueba para MongoDB
 
