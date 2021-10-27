@@ -31,7 +31,7 @@ const ModalCrear = ({productos, IdVendedor, venta, handleChange,setModalInsertar
   
   const listItemsProducto = productos.map((Producto) =>{
   
-    if(Producto.estado==="disponible"){
+    if(Producto.estado==="Disponible"){
 
     return (<option name="IdProducto" value={Producto.descripcion}>{Producto.descripcion}</option>)
     }

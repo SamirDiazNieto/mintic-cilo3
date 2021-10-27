@@ -92,8 +92,8 @@ const ModalCrearProducto = ({ usuario, handleChange, setModalInsertar, isOpen, s
           </label>
           <select name="estado" className="form-control" onChange={handleChange}>
             <option value="-1">Seleccione una opción</option>
-            <option value="disponible">disponible</option>
-            <option value="nodisponible">nodisponible</option>
+            <option value="Disponible">Disponible</option>
+            <option value="No Disponible">No Disponible</option>
 
           </select>
           {/* <input
