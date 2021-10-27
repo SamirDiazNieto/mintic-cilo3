@@ -42,9 +42,9 @@ ReactDOM.render(
 				<Route exact path='/dashboard/lista-productos' component={ListadoProductos} />
 				<Route exact path='/dashboard/lista-ventas' component={VistaVenta} />
 				<Route exact path='/dashboard/lista-usuarios' component={ListadoUsuarios} />
-        <Route exact path="/usuarios" component={ListadoUsuarios}/>
+        {/* <Route exact path="/usuarios" component={ListadoUsuarios}/>
         <Route exact path="/listado-productos" component={ListadoProductos}/> 
-        <Route exact path="/ventas" component={VistaVenta}/>
+        <Route exact path="/ventas" component={VistaVenta}/> */}
 				<Route exact component={App} />
 			</Switch>
 		</BrowserRouter>
