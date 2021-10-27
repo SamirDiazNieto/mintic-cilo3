@@ -15,7 +15,92 @@ const data = [
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const PATH_CUSTOMERS = process.env.REACT_APP_API_USUARIOS_PATH;
 const PATH_CUSTOMERS_USUARIOS = process.env.REACT_APP_API_USUARIOS_PATH;
-
+let sidebarDATA=[
+	
+	{
+		titulo: 'Inicio',
+		ruta: '/dashboard',
+		icono: <AiIcons.AiFillHome />,
+	},
+	{
+		titulo: 'Productos',
+		ruta: '/dashboard/lista-productos',
+		icono: <FaIcons.FaShoppingCart />,
+		// iconoCerrado: <RiIcons.RiArrowDownSFill />,
+		// iconoAbierto: <RiIcons.RiArrowUpSFill />,
+		// subNav: [
+		// 	{
+		// 		titulo: 'Registrar',
+		// 		ruta: '/dashboard/productos/registrar',
+		// 		icono: <AiIcons.AiOutlineAppstoreAdd />,
+		// 	},
+		// 	{
+		// 		titulo: 'Listar',
+		// 		ruta: '/dashboard/productos/listar',
+		// 		icono: <FaIcons.FaListOl />,
+		// 	},
+		// 	{
+		// 		titulo: 'Buscar',
+		// 		ruta: '/dashboard/productos/buscar',
+		// 		icono: <AiIcons.AiOutlineFileSearch />,
+		// 	},
+		// 	{
+		// 		titulo: 'Actualizar',
+		// 		ruta: '/dashboard/productos/actualizar',
+		// 		icono: <FaIcons.FaEdit />,
+		// 	},
+		// ],
+	},
+	{
+		titulo: 'Ventas',
+		ruta: '/dashboard/lista-ventas',
+		icono: <BsIcons.BsReceiptCutoff />,
+		// iconoCerrado: <RiIcons.RiArrowDownSFill />,
+		// iconoAbierto: <RiIcons.RiArrowUpSFill />,
+		// subNav: [
+		// 	{
+		// 		titulo: 'Registrar',
+		// 		ruta: '/dashboard/ventas/registrar',
+		// 		icono: <AiIcons.AiOutlineAppstoreAdd />,
+		// 	},
+		// 	{
+		// 		titulo: 'Listar',
+		// 		ruta: '/dashboard/ventas/listar',
+		// 		icono: <FaIcons.FaListOl />,
+		// 	},
+		// 	{
+		// 		titulo: 'Buscar',
+		// 		ruta: '/dashboard/ventas/buscar',
+		// 		icono: <AiIcons.AiOutlineFileSearch />,
+		// 	},
+		// 	{
+		// 		titulo: 'Actualizar',
+		// 		ruta: '/dashboard/ventas/actualizar',
+		// 		icono: <FaIcons.FaEdit />,
+		// 	},
+		// ],
+	},
+	{
+		titulo: 'Usuarios',
+		ruta: '/dashboard/lista-usuarios',
+		icono: <FaIcons.FaUserCog />,
+		// iconoCerrado: <RiIcons.RiArrowDownSFill />,
+		// iconoAbierto: <RiIcons.RiArrowUpSFill />,
+		// subNav: [
+		// 	{
+		// 		titulo: 'Listar',
+		// 		ruta: '/dashboard/usuarios/listar',
+		// 		icono: <FaIcons.FaListOl />,
+		// 	},
+		// 	{
+		// 		titulo: 'Actualizar',
+		// 		ruta: '/dashboard/usuarios/actualizar',
+		// 		icono: <FaIcons.FaEdit />,
+		// 	},
+		// ],
+	},
+	
+];
 const SidebarData = () => {
 		const history = useHistory();
 		const auth = getAuth();
@@ -57,17 +142,43 @@ const SidebarData = () => {
 				console.log("usuario----")
 				result.map((us)=>{
 					console.log("validar-----")
-					if (us.nombreUsuario===user.email){
-						console.log(us.rol)
+					if (us.nombreUsuario===user.email ){
+					
+						
 						console.log(us.estado)
-						if(us.estado==="Pendiente"){
+						console.log(us.rol)
+						
+						if(us.estado==="Pendiente" ){
 							console.log("usuarioActivo-----")
 							console.log(usuarioActivo)
 							usuarioActivo=true
-							console.log(usuarioActivo)}
+							console.log(usuarioActivo)
 							console.log("sidebarDATA")
 							console.log(sidebarDATA)
+							sidebarDATA=[]
+						}
+						if(us.estado ==="No Autorizado"){
+							sidebarDATA=[]
+						}
+							
+							
+							console.log(sidebarDATA)
+					
+					if(us.rol==="Vendedor"){
+						sidebarDATA.splice(5,1)
 					}
+					sidebarDATA.splice(0,0,{
+						titulo: `ROL: ${us.rol}`,
+						ruta: '',
+						icono: <FaIcons.FaUserCog />,})
+						sidebarDATA.splice(0,0,{
+							titulo: `ESTADO: ${us.estado}`,
+							ruta: '',
+							icono: <FaIcons.FaUserCog />,})
+					
+				}
+					console.log(sidebarDATA)
+						
 				})
 					
 				
@@ -82,95 +193,7 @@ const SidebarData = () => {
 				
 			});
 		  }, [newVal]);
-		  const sidebarDATA=[
-			{
-				titulo: 'Inicio',
-				ruta: '/dashboard',
-				icono: <AiIcons.AiFillHome />,
-			},
-			{
-				titulo: 'Productos',
-				ruta: '/dashboard/lista-productos',
-				icono: <FaIcons.FaShoppingCart />,
-				// iconoCerrado: <RiIcons.RiArrowDownSFill />,
-				// iconoAbierto: <RiIcons.RiArrowUpSFill />,
-				// subNav: [
-				// 	{
-				// 		titulo: 'Registrar',
-				// 		ruta: '/dashboard/productos/registrar',
-				// 		icono: <AiIcons.AiOutlineAppstoreAdd />,
-				// 	},
-				// 	{
-				// 		titulo: 'Listar',
-				// 		ruta: '/dashboard/productos/listar',
-				// 		icono: <FaIcons.FaListOl />,
-				// 	},
-				// 	{
-				// 		titulo: 'Buscar',
-				// 		ruta: '/dashboard/productos/buscar',
-				// 		icono: <AiIcons.AiOutlineFileSearch />,
-				// 	},
-				// 	{
-				// 		titulo: 'Actualizar',
-				// 		ruta: '/dashboard/productos/actualizar',
-				// 		icono: <FaIcons.FaEdit />,
-				// 	},
-				// ],
-			},
-			{
-				titulo: 'Ventas',
-				ruta: '/dashboard/lista-ventas',
-				icono: <BsIcons.BsReceiptCutoff />,
-				// iconoCerrado: <RiIcons.RiArrowDownSFill />,
-				// iconoAbierto: <RiIcons.RiArrowUpSFill />,
-				// subNav: [
-				// 	{
-				// 		titulo: 'Registrar',
-				// 		ruta: '/dashboard/ventas/registrar',
-				// 		icono: <AiIcons.AiOutlineAppstoreAdd />,
-				// 	},
-				// 	{
-				// 		titulo: 'Listar',
-				// 		ruta: '/dashboard/ventas/listar',
-				// 		icono: <FaIcons.FaListOl />,
-				// 	},
-				// 	{
-				// 		titulo: 'Buscar',
-				// 		ruta: '/dashboard/ventas/buscar',
-				// 		icono: <AiIcons.AiOutlineFileSearch />,
-				// 	},
-				// 	{
-				// 		titulo: 'Actualizar',
-				// 		ruta: '/dashboard/ventas/actualizar',
-				// 		icono: <FaIcons.FaEdit />,
-				// 	},
-				// ],
-			},
-			{
-				titulo: 'Usuarios',
-				ruta: '/dashboard/lista-usuarios',
-				icono: <FaIcons.FaUserCog />,
-				// iconoCerrado: <RiIcons.RiArrowDownSFill />,
-				// iconoAbierto: <RiIcons.RiArrowUpSFill />,
-				// subNav: [
-				// 	{
-				// 		titulo: 'Listar',
-				// 		ruta: '/dashboard/usuarios/listar',
-				// 		icono: <FaIcons.FaListOl />,
-				// 	},
-				// 	{
-				// 		titulo: 'Actualizar',
-				// 		ruta: '/dashboard/usuarios/actualizar',
-				// 		icono: <FaIcons.FaEdit />,
-				// 	},
-				// ],
-			},
-			{
-				titulo: 'Soporte',
-				ruta: '/dashboard/soporte',
-				icono: <MdIcons.MdOutlineContactSupport />,
-			},
-		];
+		  
 return( sidebarDATA)
 	  
 	}
