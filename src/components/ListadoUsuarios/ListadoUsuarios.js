@@ -13,10 +13,6 @@ import useColumns from "../hooks/useColumnsUsuario";
 ////////////////////////////// DATOS DE PRUEBA
 const data = [
 
-  // { id: 1, nombre: "Producto 1", password: "1000", rol: "vendedor", estado:"Pendiente"},
-  // { id: 2, nombre: "Producto 1", password: "1000", rol: "Administrador", estado:"Aceptado"},
-  // { id: 3, nombre: "Producto 1", password: "1000", rol: "vendedor", estado:"No aceptado"},
-
 ];
 
 
