@@ -1,4 +1,5 @@
 import React from 'react';
+import * as SiIcons from 'react-icons/si'
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as MdIcons from 'react-icons/md';
@@ -165,16 +166,16 @@ const SidebarData = () => {
 							console.log(sidebarDATA)
 					
 					if(us.rol==="Vendedor"){
-						sidebarDATA.splice(5,1)
+						sidebarDATA.splice(3,1)
 					}
 					sidebarDATA.splice(0,0,{
 						titulo: `ROL: ${us.rol}`,
 						ruta: '',
-						icono: <FaIcons.FaUserCog />,})
+						icono: <SiIcons.SiWebauthn />,})
 						sidebarDATA.splice(0,0,{
 							titulo: `ESTADO: ${us.estado}`,
 							ruta: '',
-							icono: <FaIcons.FaUserCog />,})
+							icono: <SiIcons.SiWebauthn />,})
 					
 				}
 					console.log(sidebarDATA)
